@@ -1,14 +1,15 @@
 import React from 'react';
-import {SafeAreaView , View} from 'react-native';
+import {SafeAreaView, View, Text} from 'react-native';
 import Authentication from './src/screen/Authentication';
 
 const App = () => {
   return (
-    <SafeAreaView>
-      <View>
+    <SafeAreaView style = {{flex: 1}}>
+     
         <Authentication />
-      </View>
-    </SafeAreaView>
+       
+     
+     </SafeAreaView>
   );
 };
 

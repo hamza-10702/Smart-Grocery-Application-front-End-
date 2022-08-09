@@ -1,23 +1,124 @@
-import {ScrollView, StyleSheet, Text, View} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  KeyboardAvoidingView,
+} from 'react-native';
 import React from 'react';
 import {Dimensions} from 'react-native';
-import AuthenticationContainer from './AuthenticationContainer';
+import FormContainer from './FormContainer';
 
-export default function Login() {
+export default function SignUp() {
   return (
-    <AuthenticationContainer>
-      <Text
-        style={styles.signUpText}>
-        Sign Up
-      </Text>
-    </AuthenticationContainer>
+    <FormContainer>
+      <KeyboardAvoidingView>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Email:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Password:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Email:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Password:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Password:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Password:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+        <Text style={{fontWeight: 'bold', alignItems: 'flex-start'}}>
+          Password:
+        </Text>
+        <TextInput
+          placeholder="Enter Email"
+          secureTextEntry
+          style={{
+            borderWidth: 1,
+            borderColor: 'black',
+            height: 40,
+            borderRadius: 8,
+            fontSize: 16,
+            paddingLeft: 10,
+          }}></TextInput>
+      </KeyboardAvoidingView>
+    </FormContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  signUpText: {
-    fontSize: 50,
-    fontWeight: '700',
-    color: 'red',
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: Dimensions.get('window').width,
   },
 });

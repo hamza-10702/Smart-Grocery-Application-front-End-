@@ -4,10 +4,10 @@ import React from 'react';
 export default function HeaderButton({title, backgroundColor, style, onPress}) {
   return (
     <TouchableWithoutFeedback onPress={onPress}>
-      <Animated.View style={[styles.container, style, {backgroundColor}]}>
-        <Text style={styles.title}>{title}</Text>
-      </Animated.View>
-    </TouchableWithoutFeedback>
+    <View style={[styles.container, style, { backgroundColor }]}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+  </TouchableWithoutFeedback>
   );
 }
 
