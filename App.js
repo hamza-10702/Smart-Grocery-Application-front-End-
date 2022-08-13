@@ -4,7 +4,7 @@ import Authentication from './src/screen/Authentication';
 
 const App = () => {
   return (
-    <SafeAreaView style = {{flex: 1}}>
+    <SafeAreaView style = {{flex: 1 }}>
      
         <Authentication />
        

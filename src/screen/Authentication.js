@@ -5,6 +5,7 @@ import {
   View,
   Animated,
   Dimensions,
+  KeyboardAvoidingView,
   Text,
 } from 'react-native';
 import HeaderImage from '../components/login/HeaderImage';
@@ -14,8 +15,9 @@ import SignUp from '../components/login/SignUp';
 
 export default function Authentication() {
   return (
+    // <View>
     <ScrollView>
-      <View style={{height: 300 }}>
+      <View style={{height: 300}}>
         <HeaderImage
           leftHeading="Welcome "
           rightHeading="Back"
@@ -39,15 +41,15 @@ export default function Authentication() {
           title="Sign up"
         />
       </View>
-
-      <ScrollView
-        horizontal={true}
-        pagingEnabled={true}
-        showsHorizontalScrollIndicator={false}>
-        <SignUp />
+      <View>
         <Login />
-      </ScrollView>
+
+        <KeyboardAvoidingView>
+          <SignUp />
+        </KeyboardAvoidingView>
+      </View>
     </ScrollView>
+    // </View>
   );
 }
 
