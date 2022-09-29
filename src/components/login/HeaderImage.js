@@ -4,12 +4,7 @@ import React from 'react';
 export default function HeaderImage({leftHeading, rightHeading, subHeading}) {
   return (
     <>
-      <View>
-        <Image
-          style={{ width: "100%", height: 200 , }}
-          source={require('../../assets/images/header-image.jpg')}
-        />
-      </View>
+     
       <View style={styles.container}>
         <Text style={styles.heading}>{leftHeading}</Text>
         <Text style={styles.heading}> {rightHeading}</Text>

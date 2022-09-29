@@ -1,15 +1,13 @@
 import React from 'react';
 import {SafeAreaView, View, Text} from 'react-native';
-import Authentication from './src/screen/Authentication';
+import {NavigationContainer} from '@react-navigation/native';
+import RootNavigation from './src/Navigation';
 
 const App = () => {
   return (
-    <SafeAreaView style = {{flex: 1 }}>
-     
-        <Authentication />
-       
-     
-     </SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
+      <RootNavigation />
+    </SafeAreaView>
   );
 };
 
