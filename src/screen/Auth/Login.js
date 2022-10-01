@@ -8,113 +8,143 @@ import {
 } from 'react-native';
 import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import {TextInput, Button} from 'react-native-paper';
 import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {loginValidationSchema} from '../../Schema/index';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/login/Header';
+import  Toaster ,{toastConfig} from '../../components/Toaster/Toaster';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {useEffect} from 'react';
+
+
+const initialValues = {
+  email: '',
+  password: '',
+};
 
 export default function Login() {
+  const navigation = useNavigation();
+
   const [passwordVisible, setPasswordVisible] = useState(true);
+
 
   return (
     <View style={styles.container}>
       <View>
-        <Header />
+        <Header name={'Sign Up'} />
       </View>
-      <View style={styles.formInputWraper}>
-        <KeyboardAvoidingView style={styles.formContainer}>
-          <Formik
-            validationSchema={loginValidationSchema}
-            initialValues={{email: '', password: ''}}
-            onSubmit={values => console.log(values)}>
-            {({
-              handleChange,
-              handleBlur,
-              handleSubmit,
-              values,
-              errors,
-              isValid,
-            }) => (
+      <View style={styles.formContainer}>
+        <Formik
+          validationSchema={loginValidationSchema}
+          initialValues={initialValues}
+          onSubmit={values => console.log(values)}>
+          {({
+            handleChange,
+            handleBlur,
+            handleSubmit,
+            values,
+            errors,
+            isValid,
+          }) => (
+            <View>
               <View>
-                <View>
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{justifyContent: 'center'}}>
-                      <Ionicons name="mail-outline" size={20} />
-                    </View>
-                    <View style={{flex: 1}}>
-                      <TextInput
-                        type="focused"
-                        name="email"
-                        label="Email"
-                        style={styles.textInput}
-                        onChangeText={handleChange('email')}
-                        onBlur={handleBlur('email')}
-                        value={values.email}
-                        keyboardType="email-address"
-                        activeUnderlineColor="#054f4f"
-                      />
-                    </View>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{justifyContent: 'center'}}>
+                    <Ionicons name="mail-outline" size={20} />
                   </View>
-                  {errors.email && (
-                    <Text style={{fontSize: 10, color: 'red'}}>
-                      {errors.email}
-                    </Text>
-                  )}
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={{justifyContent: 'center'}}>
-                      <Ionicons name="lock-closed-outline" size={25} />
-                    </View>
-                    <View style={{flex: 1}}>
-                      <TextInput
-                        type="flat"
-                        name="password"
-                        label="Password"
-                        style={styles.textInput}
-                        onChangeText={handleChange('password')}
-                        onBlur={handleBlur('password')}
-                        value={values.password}
-                        activeUnderlineColor="#054f4f"
-                        secureTextEntry={passwordVisible}
-                        right={
-                          <TextInput.Icon
-                            name={passwordVisible ? 'eye-off' : 'eye'}
-                            onPress={() => setPasswordVisible(!passwordVisible)}
-                          />
-                        }
-                      />
-                    </View>
+                  <View style={{flex: 1}}>
+                    <TextInput
+                      type="focused"
+                      name="email"
+                      label="Email"
+                      style={styles.textInput}
+                      onChangeText={handleChange('email')}
+                      onBlur={handleBlur('email')}
+                      value={values.email}
+                      keyboardType="email-address"
+                      activeUnderlineColor="#054f4f"
+                    />
                   </View>
-                  {errors.password && (
-                    <Text style={{fontSize: 10, color: 'red'}}>
-                      {errors.password}
-                    </Text>
-                  )}
                 </View>
-                <View style={styles.loginButton}>
-                  <Button
-                    style={{
-                      backgroundColor: '#054f4f',
-                    }}
-                    mode="contained"
-                    onPress={() => console.log('Pressed')}>
-                    LOGIN
-                  </Button>
+                {errors.email && (
+                  <Text style={{fontSize: 10, color: 'red'}}>
+                    {errors.email}
+                  </Text>
+                )}
+                <View style={{flexDirection: 'row'}}>
+                  <View style={{justifyContent: 'center'}}>
+                    <Ionicons name="lock-closed-outline" size={25} />
+                  </View>
+                  <View style={{flex: 1}}>
+                    <TextInput
+                      type="flat"
+                      name="password"
+                      label="Password"
+                      style={styles.textInput}
+                      onChangeText={handleChange('password')}
+                      onBlur={handleBlur('password')}
+                      value={values.password}
+                      activeUnderlineColor="#054f4f"
+                      secureTextEntry={passwordVisible}
+                      right={
+                        <TextInput.Icon
+                          name={passwordVisible ? 'eye-off' : 'eye'}
+                          onPress={() => setPasswordVisible(!passwordVisible)}
+                        />
+                      }
+                    />
+                  </View>
                 </View>
-                <View style={styles.forgetPassword}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      console.log('Forget Password');
-                    }}>
-                    <Text style={{fontWeight: 'bold'}}>Forget Password?</Text>
-                  </TouchableOpacity>
-                </View>
+                {errors.password && (
+                  <Text style={{fontSize: 10, color: 'red'}}>
+                    {errors.password}
+                  </Text>
+                )}
               </View>
-            )}
-          </Formik>
-        </KeyboardAvoidingView>
+              <View style={styles.loginButton}>
+                <Button
+                  style={{
+                    backgroundColor: '#054f4f',
+                  }}
+                  mode="contained"
+                  onPress={() => {
+                    console.log(values);
+                  }}
+                  disabled={!isValid}
+                  >
+                  LOGIN
+                </Button>
+              </View>
+              <View style={styles.forgetPassword}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('Forget Password');
+                    Toast.show({
+                      position: 'top',
+                      visibilityTime: 500,
+                      type: 'customSuccess',
+                      props: {uuid: 'Hellow World'},
+                    });
+                  }}>
+                  <Text style={{fontWeight: 'bold'}}>Forget Password?</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
+        </Formik>
+       
       </View>
+      <View>
+          <View
+            style={{
+              flex: 1,
+            }}>
+            <Toast config={toastConfig} />
+          </View>
+        </View>
     </View>
   );
 }
@@ -124,19 +154,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  formInputWraper: {
-    borderColor: 'none',
-    borderRadius: 5,
-    marginVertical: 40,
-    width: '100%',
 
-    flex: 1,
-    alignSelf: 'center',
-  },
   formContainer: {
     borderColor: 'gray',
     alignSelf: 'center',
-    height: 200,
+    height: 300,
     width: '90%',
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -158,8 +180,8 @@ const styles = StyleSheet.create({
   },
 });
 
-
-{/* <Button
+{
+  /* <Button
 mode="Contained"
 color="black"
 contentStyle={{height: 44}}
@@ -168,4 +190,5 @@ onPress={handleSubmit}
 style={{marginVertical: 10}}
 disabled={!isValid}>
 SIGN UP
-</Button> */}
+</Button> */
+}

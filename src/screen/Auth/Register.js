@@ -9,11 +9,15 @@ import {
 import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
 import {Formik, Form, Field, ErrorMessage, useFormik} from 'formik';
+import {useNavigation} from '@react-navigation/native';
 import {TextInput, Button} from 'react-native-paper';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {signUpValidationSchema} from '../../Schema/index';
 import Header from '../../components/login/Header';
+import Toaster, {toastConfig} from '../../components/Toaster/Toaster';
+import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
+import {useEffect} from 'react';
 
 const initialValues = {
   fullName: '',
@@ -23,12 +27,13 @@ const initialValues = {
 };
 
 export default function Registger() {
+  const navigation = useNavigation();
   const [passwordVisible, setPasswordVisible] = useState(true);
 
   return (
     <ScrollView style={styles.container}>
       <View>
-        <Header />
+        <Header name={'Login'} />
       </View>
 
       <View style={styles.formContainer}>
@@ -157,13 +162,25 @@ export default function Registger() {
                     backgroundColor: '#054f4f',
                   }}
                   mode="contained"
-                  onPress={() => console.log('Pressed')}>
+                  onPress={() => {
+                    // navigation.navigate('SideDrawer')
+                    
+                  }}
+                  >
                   SIGN UP
                 </Button>
               </View>
             </View>
           )}
         </Formik>
+        <View>
+          <View
+            style={{
+              flex: 1,
+            }}>
+            <Toast config={toastConfig} />
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -174,22 +191,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  // formInputWraper: {
-  //   borderColor: 'none',
-  //   borderRadius: 5,
-  //   marginVertical: 40,
-  //   width: '100%',
-
-  //   flex: 1,
-  //   alignSelf: 'center',
-  // },
+  
   formContainer: {
     borderColor: 'gray',
     alignSelf: 'center',
     height: 400,
     width: '90%',
     backgroundColor: 'white',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     paddingHorizontal: 10,
     marginTop: 20,
     borderRadius: 10,
