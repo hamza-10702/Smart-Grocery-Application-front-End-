@@ -10,11 +10,11 @@ import {
   import {useNavigation} from '@react-navigation/native';
 
 
-  export default function DashBoard(){
+  export default function ChangePassword(){
     return (
         <View>
             <Text>
-                Hellow DashBoard
+                Hellow ChangePassword
             </Text>
         </View>
     )

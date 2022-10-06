@@ -111,7 +111,7 @@ export default function Login() {
                   }}
                   mode="contained"
                   onPress={() => {
-                    navigation.navigate('DrawerNav')
+                    navigation.navigate('SideDrawer')
                     console.log(values);
                   }}
                   disabled={!isValid}
