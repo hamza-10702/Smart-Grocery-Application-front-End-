@@ -15,10 +15,10 @@ import {loginValidationSchema} from '../../Schema/index';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/login/Header';
-import  Toaster ,{toastConfig} from '../../components/Toaster/Toaster';
+import ModalNative from '../../components/Modal/Modal';
+import Toaster, {toastConfig} from '../../components/Toaster/Toaster';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {useEffect} from 'react';
-
 
 const initialValues = {
   email: '',
@@ -29,7 +29,7 @@ export default function Login() {
   const navigation = useNavigation();
 
   const [passwordVisible, setPasswordVisible] = useState(true);
-
+  const [modalVisible, setModalVisible] = useState(false);
 
   return (
     <View style={styles.container}>
@@ -70,7 +70,7 @@ export default function Login() {
                   </View>
                 </View>
                 {errors.email && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
+                     <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
                     {errors.email}
                   </Text>
                 )}
@@ -99,7 +99,7 @@ export default function Login() {
                   </View>
                 </View>
                 {errors.password && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
+                     <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
                     {errors.password}
                   </Text>
                 )}
@@ -111,9 +111,11 @@ export default function Login() {
                   }}
                   mode="contained"
                   onPress={() => {
+                    navigation.navigate('DrawerNav')
                     console.log(values);
                   }}
                   disabled={!isValid}
+                  
                   >
                   LOGIN
                 </Button>
@@ -122,12 +124,7 @@ export default function Login() {
                 <TouchableOpacity
                   onPress={() => {
                     console.log('Forget Password');
-                    Toast.show({
-                      position: 'top',
-                      visibilityTime: 500,
-                      type: 'customSuccess',
-                      props: {uuid: 'Hellow World'},
-                    });
+                    setModalVisible(true);
                   }}>
                   <Text style={{fontWeight: 'bold'}}>Forget Password?</Text>
                 </TouchableOpacity>
@@ -135,16 +132,15 @@ export default function Login() {
             </View>
           )}
         </Formik>
-       
       </View>
-      <View>
-          <View
-            style={{
-              flex: 1,
-            }}>
-            <Toast config={toastConfig} />
-          </View>
+      {modalVisible ? (
+        <View>
+          <ModalNative
+            modalVisible={modalVisible}
+            setModalVisible={setModalVisible}
+          />
         </View>
+      ) : null}
     </View>
   );
 }
@@ -172,7 +168,7 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 10,
-    backgroundColor: 'red',
+    
   },
   forgetPassword: {
     alignItems: 'flex-end',
