@@ -69,7 +69,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.fullName && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
                     {errors.fullName}
                   </Text>
                 )}
@@ -92,7 +92,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.email && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
                     {errors.email}
                   </Text>
                 )}
@@ -122,7 +122,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.password && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
                     {errors.password}
                   </Text>
                 )}
@@ -151,7 +151,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.confirmPassword && (
-                  <Text style={{fontSize: 10, color: 'red'}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
                     {errors.confirmPassword}
                   </Text>
                 )}

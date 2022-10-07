@@ -14,13 +14,13 @@ export default function SideDrawer() {
     <Drawer.Navigator
       drawerContent={props => <CustomDrawer {...props} />}
       screenOptions={{
-        headerStyle: {backgroundColor: '#054f4f'},
+        headerStyle: {backgroundColor: '#0052529e'},
         headerTintColor: 'white',
-        drawerActiveBackgroundColor: '#054f4f',
-        drawerActiveTintColor: 'white',
+        // drawerActiveBackgroundColor: '#0052529e',
+        drawerActiveTintColor: 'black',
         drawerLabelStyle: {
-          marginLeft: -20,
-          fontSize: 15,
+          // marginLeft: -20,
+          fontSize: 13,
         },
       }}>
       <Drawer.Screen
@@ -32,7 +32,7 @@ export default function SideDrawer() {
           ),
         }}
       />
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="Splash Screen"
         component={SplashScreen}
         options={{
@@ -40,8 +40,8 @@ export default function SideDrawer() {
             <Ionicons name="ios-home" size={15} color={color} />
           ),
         }}
-      />
-      <Drawer.Screen
+      /> */}
+      {/* <Drawer.Screen
         name="Change Password"
         component={ChangePassword}
         options={{
@@ -49,7 +49,7 @@ export default function SideDrawer() {
             <Ionicons name="ios-home" size={15} color={color} />
           ),
         }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 }

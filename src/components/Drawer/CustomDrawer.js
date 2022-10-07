@@ -26,10 +26,20 @@ export default function CustomDrawer({...props}) {
     <View style={{flex: 1}}>
       <DrawerContentScrollView
         {...props}
-        contentContainerStyle={{
-          backgroundColor: 'yellow',
-        }}>
-        <View style={{width: '100%', height: 200}}>
+        contentContainerStyle={
+          {
+            //   backgroundColor: '#0a9f9f4a',
+          }
+        }>
+        <View
+          style={{
+            width: '100%',
+            height: 200,
+            borderBottomColor: '#ccc',
+            borderBottomWidth: 1,
+            backgroundColor: '#0a9f9f4a',
+            marginTop: -6,
+          }}>
           <View
             style={{
               flexDirection: 'row',
@@ -41,11 +51,11 @@ export default function CustomDrawer({...props}) {
             <View>
               <View
                 style={{
-                  height: 120,
-                  width: 120,
+                  height: 100,
+                  width: 100,
                   backgroundColor: 'cyan',
-                  borderRadius: 60,
-                  borderWidth: 1,
+                  borderRadius: 50,
+                  //   borderWidth: 1,
                 }}></View>
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>
                 {`Hafiz Hamza`}
@@ -53,11 +63,33 @@ export default function CustomDrawer({...props}) {
               <Text style={{fontSize: 16}}>hamza@gmail.com</Text>
             </View>
           </View>
+          <View style={{}}></View>
         </View>
 
         <View style={{backgroundColor: 'white', paddingTop: 10}}>
           <DrawerItemList {...props} />
         </View>
+
+        <DrawerItem
+          label="Change Password"
+          Style={{
+            backgroundColor: 'white',
+          }}
+          icon={({color, size}) => (
+            <Ionicons color={color} size={15} name={`ios-home`} />
+          )}
+          onPress={() => navigation.navigate('ChangePassword')}
+        />
+        <DrawerItem
+          label="Splash Screen"
+          Style={{
+            backgroundColor: 'white',
+          }}
+          icon={({color, size}) => (
+            <Ionicons color={color} size={15} name={`ios-home`} />
+          )}
+          onPress={() => navigation.navigate('SplashScreen')}
+        />
       </DrawerContentScrollView>
       <View
         style={{

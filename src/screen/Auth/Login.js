@@ -17,6 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/login/Header';
 import ModalNative from '../../components/Modal/Modal';
 import Toaster, {toastConfig} from '../../components/Toaster/Toaster';
+import AppStatusBar from '../../components/AppStatusBar' 
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {useEffect} from 'react';
 
@@ -33,6 +34,7 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
+      <AppStatusBar backgroundColor='white'  barStyle="dark-content" />
       <View>
         <Header name={'Sign Up'} />
       </View>
@@ -70,7 +72,7 @@ export default function Login() {
                   </View>
                 </View>
                 {errors.email && (
-                     <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft: 20}}>
                     {errors.email}
                   </Text>
                 )}
@@ -99,7 +101,7 @@ export default function Login() {
                   </View>
                 </View>
                 {errors.password && (
-                     <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft: 20}}>
                     {errors.password}
                   </Text>
                 )}
@@ -111,12 +113,10 @@ export default function Login() {
                   }}
                   mode="contained"
                   onPress={() => {
-                    navigation.navigate('SideDrawer')
+                    navigation.navigate('SideDrawer');
                     console.log(values);
                   }}
-                  disabled={!isValid}
-                  
-                  >
+                  disabled={!isValid}>
                   LOGIN
                 </Button>
               </View>
@@ -168,7 +168,6 @@ const styles = StyleSheet.create({
   },
   loginButton: {
     marginTop: 10,
-    
   },
   forgetPassword: {
     alignItems: 'flex-end',

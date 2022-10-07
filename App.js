@@ -7,10 +7,13 @@ import RootNavigation from './src/Navigation';
 const App = () => {
   return (
     <SafeAreaView style={{flex: 1}}>
+      {/* <View style={{flex: 1}}> */}
+
       <NavigationContainer>
         {/* <SideDrawer/> */}
         <RootNavigation />
       </NavigationContainer>
+      {/* </View> */}
     </SafeAreaView>
   );
 };
