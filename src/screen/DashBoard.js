@@ -16,7 +16,6 @@ import {
 } from 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import AppStatusBar from '../components/AppStatusBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width} = Dimensions.get('screen');
@@ -206,11 +205,24 @@ export default function DashBoard() {
             <TextInput
               style={{flex: 1, fontSize: 18}}
               placeholder="Search for food"
+              onChangeText={text => {
+                console.log(text);
+              }}
             />
+
+            <TouchableOpacity onPress={() => console.log('clear')}>
+              <View>
+                <Ionicons
+                  name="md-close-circle-sharp"
+                  size={28}
+                  color="black"
+                />
+              </View>
+            </TouchableOpacity>
           </View>
-          <View style={style.sortBtn}>
+          {/* <View style={style.sortBtn}>
             <Ionicons name="scan-outline" size={28} color="white" />
-          </View>
+          </View> */}
         </View>
         <View>
           <ListCategories />

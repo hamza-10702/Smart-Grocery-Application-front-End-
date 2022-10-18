@@ -100,16 +100,6 @@ export default function CustomDrawer({...props}) {
           )}
           onPress={() => navigation.navigate('SplashScreen')}
         />
-        <DrawerItem
-          label="Splash Screen"
-          Style={{
-            backgroundColor: 'white',
-          }}
-          icon={({color, size}) => (
-            <Ionicons color={color} size={15} name={`ios-home`} />
-          )}
-          onPress={() => navigation.navigate('DashBoard')}
-        />
       </DrawerContentScrollView>
       <View
         style={{

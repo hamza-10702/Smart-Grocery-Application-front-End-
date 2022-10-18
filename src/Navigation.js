@@ -46,7 +46,7 @@ export default function RootNavigation() {
           ),
         }}
       />
-        <Stack.Screen
+        {/* <Stack.Screen
          name="DashBoard"
          component={DashBoard}
         options={{
@@ -55,7 +55,7 @@ export default function RootNavigation() {
             <Ionicons name="ios-home" size={15} color={color} />
           ),
         }}
-      />
+      /> */}
       </Stack.Navigator>
     </>
   );
