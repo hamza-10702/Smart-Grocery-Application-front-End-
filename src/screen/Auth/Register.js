@@ -69,7 +69,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.fullName && (
-                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft: 20}}>
                     {errors.fullName}
                   </Text>
                 )}
@@ -92,7 +92,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.email && (
-                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft: 20}}>
                     {errors.email}
                   </Text>
                 )}
@@ -122,7 +122,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.password && (
-                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft: 20}}>
                     {errors.password}
                   </Text>
                 )}
@@ -151,7 +151,7 @@ export default function Registger() {
                   </View>
                 </View>
                 {errors.confirmPassword && (
-                  <Text style={{fontSize: 12, color: 'red', marginLeft:20}}>
+                  <Text style={{fontSize: 12, color: 'red', marginLeft: 20}}>
                     {errors.confirmPassword}
                   </Text>
                 )}
@@ -164,23 +164,13 @@ export default function Registger() {
                   mode="contained"
                   onPress={() => {
                     // navigation.navigate('SideDrawer')
-                    
-                  }}
-                  >
+                  }}>
                   SIGN UP
                 </Button>
               </View>
             </View>
           )}
         </Formik>
-        <View>
-          <View
-            style={{
-              flex: 1,
-            }}>
-            <Toast config={toastConfig} />
-          </View>
-        </View>
       </View>
     </ScrollView>
   );
@@ -191,17 +181,19 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: 'white',
   },
-  
+
   formContainer: {
     borderColor: 'gray',
     alignSelf: 'center',
-    height: 400,
+    height: 380,
     width: '90%',
     backgroundColor: 'white',
     // justifyContent: 'center',
     paddingHorizontal: 10,
     marginTop: 20,
     borderRadius: 10,
+    elevation:5,
+    marginBottom: 5
   },
   textInput: {
     backgroundColor: 'white',

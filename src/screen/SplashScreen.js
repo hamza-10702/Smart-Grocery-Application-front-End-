@@ -19,7 +19,7 @@ export default function SplashScreen() {
     console.log('user Login');
   };
   return (
-    <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['#054f4f', '#00a1a1', '#054f4f']} style={styles.linearGradient}>
+    <LinearGradient start={{x: 0, y: 0}} end={{x: 1, y: 1}} colors={['white', 'white', 'white']} style={styles.linearGradient}>
       <Text>Sign in with Facebook</Text>
     </LinearGradient>
   );

@@ -10,30 +10,30 @@ import {
 import {Button} from 'react-native-paper';
 import React from 'react';
 import {useNavigation} from '@react-navigation/native';
+import AppStatusBar from '../AppStatusBar';
 
 export default function Header({name}) {
   const navigation = useNavigation();
 
   return (
     <View style={styles.contianer}>
+      <AppStatusBar backgroundColor='white'  barStyle="dark-content" />
       <View style={styles.headerButton}>
         <Button
-         mode="Outlined"
-         style = {{
-          borderWidth: 1,
-          borderColor: '#054f4f',
-          borderRadius: 50
-         }}
-         color = '#054f4f'
-         onPress={() => {
-            if(name == 'Login'){
-              navigation.navigate('Login')
-            }else{
-              navigation.navigate('Register')
+          mode="Outlined"
+          style={{
+            borderWidth: 1,
+            borderColor: '#054f4f',
+            borderRadius: 50,
+          }}
+          color="#054f4f"
+          onPress={() => {
+            if (name == 'Login') {
+              navigation.navigate('Login');
+            } else {
+              navigation.navigate('Register');
             }
-         }}
-          
-          >
+          }}>
           <Text style={styles.headerButtonText}>{name}</Text>
         </Button>
       </View>
@@ -49,6 +49,7 @@ export default function Header({name}) {
 
 const styles = StyleSheet.create({
   contianer: {
+    // marginTop: 30,
     height: 260,
   },
 
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
   },
   headerImage: {
     width: '70%',
-    height: 200,
+    height: 180,
     borderRadius: 10,
     alignSelf: 'center',
   },

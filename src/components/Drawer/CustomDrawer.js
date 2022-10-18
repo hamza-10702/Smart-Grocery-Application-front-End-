@@ -71,6 +71,16 @@ export default function CustomDrawer({...props}) {
         </View>
 
         <DrawerItem
+          label="slide"
+          Style={{
+            backgroundColor: 'white',
+          }}
+          icon={({color, size}) => (
+            <Ionicons color={color} size={15} name={`ios-home`} />
+          )}
+          onPress={() => navigation.navigate('carousel')}
+        />
+        <DrawerItem
           label="Change Password"
           Style={{
             backgroundColor: 'white',
@@ -89,6 +99,16 @@ export default function CustomDrawer({...props}) {
             <Ionicons color={color} size={15} name={`ios-home`} />
           )}
           onPress={() => navigation.navigate('SplashScreen')}
+        />
+        <DrawerItem
+          label="Splash Screen"
+          Style={{
+            backgroundColor: 'white',
+          }}
+          icon={({color, size}) => (
+            <Ionicons color={color} size={15} name={`ios-home`} />
+          )}
+          onPress={() => navigation.navigate('DashBoard')}
         />
       </DrawerContentScrollView>
       <View

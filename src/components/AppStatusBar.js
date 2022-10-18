@@ -4,7 +4,7 @@ import {StyleSheet, StatusBar, View} from 'react-native';
 export default function AppStatusBar({backgroundColor, ...props}) {
   return (
     <View style={[styles.statusBar, backgroundColor]}>
-      <StatusBar translucent backgroundColor={backgroundColor} {...props}  />
+      <StatusBar  backgroundColor={backgroundColor} {...props}  />
     </View>
   );
 }

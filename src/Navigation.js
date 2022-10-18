@@ -3,9 +3,11 @@ import {useRef, useState} from 'react';
 import {Text} from 'react-native';
 import Login from './screen/Auth/Login';
 import Register from './screen/Auth/Register';
+import DashBoard from './screen/DashBoard';
 import SplashScreen from './screen/SplashScreen';
 import ChangePassword from './screen/ChangePassword';
 import ModalNative from './components/Modal/Modal';
+import Carousel from './components/carouselSlider';
 import {NavigationContainer} from '@react-navigation/native';
 import SideDrawer from './components/Drawer/SideDrawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
@@ -27,6 +29,26 @@ export default function RootNavigation() {
         <Stack.Screen
         name="ChangePassword"
         component={ChangePassword}
+        options={{
+          headerBackVisible: true,
+          drawerIcon: ({color}) => (
+            <Ionicons name="ios-home" size={15} color={color} />
+          ),
+        }}
+      />
+        <Stack.Screen
+        name="carousel"
+        component={Carousel}
+        options={{
+          headerBackVisible: true,
+          drawerIcon: ({color}) => (
+            <Ionicons name="ios-home" size={15} color={color} />
+          ),
+        }}
+      />
+        <Stack.Screen
+         name="DashBoard"
+         component={DashBoard}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (

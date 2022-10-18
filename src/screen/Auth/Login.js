@@ -34,7 +34,6 @@ export default function Login() {
 
   return (
     <View style={styles.container}>
-      <AppStatusBar backgroundColor='white'  barStyle="dark-content" />
       <View>
         <Header name={'Sign Up'} />
       </View>

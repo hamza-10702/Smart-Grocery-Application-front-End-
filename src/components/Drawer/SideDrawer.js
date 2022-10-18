@@ -32,24 +32,7 @@ export default function SideDrawer() {
           ),
         }}
       />
-      {/* <Drawer.Screen
-        name="Splash Screen"
-        component={SplashScreen}
-        options={{
-          drawerIcon: ({color}) => (
-            <Ionicons name="ios-home" size={15} color={color} />
-          ),
-        }}
-      /> */}
-      {/* <Drawer.Screen
-        name="Change Password"
-        component={ChangePassword}
-        options={{
-          drawerIcon: ({color}) => (
-            <Ionicons name="ios-home" size={15} color={color} />
-          ),
-        }}
-      /> */}
+     
     </Drawer.Navigator>
   );
 }
