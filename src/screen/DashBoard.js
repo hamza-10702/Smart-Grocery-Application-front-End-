@@ -15,13 +15,14 @@ import {
   TouchableOpacity,
 } from 'react-native-gesture-handler';
 import React, {useState} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import TopSearchBar from '../components/TopSearchBar';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 3 - 20;
+const searchInputWidth = width / 1.4;
 
-export default function DashBoard() {
+export default function DashBoard({navigation, route}) {
   const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
 
   const ListCategories = () => {
@@ -96,8 +97,7 @@ export default function DashBoard() {
       <TouchableHighlight
         underlayColor="white"
         activeOpacity={0.9}
-        // onPress={() => navigation.navigate('DetailsScreen', food)}
-      >
+        onPress={() => navigation.navigate('AboutItem', food)}>
         <View style={style.card}>
           <View style={{alignItems: 'center', top: -20}}>
             <Image
@@ -184,10 +184,44 @@ export default function DashBoard() {
       image: require('../assets/images/c3.jpg'),
     },
   ];
+
+  const openDrawer = () => {
+    navigation.openDrawer();
+  };
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <View style={style.header}>
+          <Ionicons name="menu-outline" size={28} onPress={openDrawer} />
+          <View style={style.inputContainer}>
+            <Icon name="search" size={20} />
+            <TextInput
+              style={{flex: 1, fontSize: 18}}
+              placeholder="Search grocery"
+              onChangeText={text => {
+                console.log(text);
+              }}
+            />
+
+            <TouchableOpacity onPress={() => console.log('clear')}>
+              <View>
+                <Ionicons
+                  name="md-close-circle-sharp"
+                  size={20}
+                  color="black"
+                />
+              </View>
+            </TouchableOpacity>
+          </View>
+          <View style={{marginLeft: 5}}>
+            <TouchableOpacity  onPress={() => navigation.navigate('Cart')}>
+              <View>
+                <Ionicons name="cart-outline" size={30} color="red" />
+              </View>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <View style={style.imageSlider}>
           <View>
             <Text style={{marginTop: 5, fontSize: 22, color: 'grey'}}>
               Yahan per slider aaega
@@ -200,26 +234,6 @@ export default function DashBoard() {
             flexDirection: 'row',
             paddingHorizontal: 20,
           }}>
-          <View style={style.inputContainer}>
-            <Icon name="search" size={28} />
-            <TextInput
-              style={{flex: 1, fontSize: 18}}
-              placeholder="Search for food"
-              onChangeText={text => {
-                console.log(text);
-              }}
-            />
-
-            <TouchableOpacity onPress={() => console.log('clear')}>
-              <View>
-                <Ionicons
-                  name="md-close-circle-sharp"
-                  size={28}
-                  color="black"
-                />
-              </View>
-            </TouchableOpacity>
-          </View>
           {/* <View style={style.sortBtn}>
             <Ionicons name="scan-outline" size={28} color="white" />
           </View> */}
@@ -242,20 +256,46 @@ export default function DashBoard() {
 
 const style = StyleSheet.create({
   header: {
-    marginTop: 20,
+    paddingVertical: 20,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginHorizontal: 20,
+  },
+  details: {
     paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 60,
+    backgroundColor: 'red',
+    borderTopRightRadius: 40,
+    borderTopLeftRadius: 40,
   },
   inputContainer: {
-    flex: 1,
-    height: 50,
+    // flex: 2,
+    width: searchInputWidth,
+    height: 40,
+    backgroundColor: 'red',
     borderRadius: 10,
     flexDirection: 'row',
     backgroundColor: '#E5E5E5',
     alignItems: 'center',
     paddingHorizontal: 20,
+    marginHorizontal: 10,
   },
+  imageSlider: {
+    marginTop: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+  },
+  // inputContainer: {
+  //   flex: 1,
+  //   height: 50,
+  //   borderRadius: 10,
+  //   flexDirection: 'row',
+  //   backgroundColor: '#E5E5E5',
+  //   alignItems: 'center',
+  //   paddingHorizontal: 20,
+  // },
   sortBtn: {
     width: 50,
     height: 50,

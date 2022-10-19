@@ -4,6 +4,7 @@ import {Text} from 'react-native';
 import Login from './screen/Auth/Login';
 import Register from './screen/Auth/Register';
 import DashBoard from './screen/DashBoard';
+import AboutItem from './screen/AboutItem';
 import SplashScreen from './screen/SplashScreen';
 import ChangePassword from './screen/ChangePassword';
 import ModalNative from './components/Modal/Modal';
@@ -11,6 +12,7 @@ import Carousel from './components/carouselSlider';
 import {NavigationContainer} from '@react-navigation/native';
 import SideDrawer from './components/Drawer/SideDrawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import Cart from './screen/Cart';
 
 export default function RootNavigation() {
   const Stack = createNativeStackNavigator();
@@ -46,16 +48,26 @@ export default function RootNavigation() {
           ),
         }}
       />
-        {/* <Stack.Screen
-         name="DashBoard"
-         component={DashBoard}
+        <Stack.Screen
+         name="AboutItem"
+         component={AboutItem}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (
             <Ionicons name="ios-home" size={15} color={color} />
           ),
         }}
-      /> */}
+      />
+        <Stack.Screen
+         name="Cart"
+         component={Cart}
+        options={{
+          headerBackVisible: true,
+          drawerIcon: ({color}) => (
+            <Ionicons name="ios-home" size={15} color={color} />
+          ),
+        }}
+      />
       </Stack.Navigator>
     </>
   );

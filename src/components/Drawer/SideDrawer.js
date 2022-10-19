@@ -21,7 +21,7 @@ export default function SideDrawer() {
           height: 50,
         },
         headerShown: false,
-        drawerHideStatusBarOnOpen: true,
+        // drawerHideStatusBarOnOpen: true,
 
         headerTintColor: 'white',
 
