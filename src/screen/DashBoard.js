@@ -95,26 +95,34 @@ export default function DashBoard({navigation, route}) {
 
   const Card = ({food}) => {
     return (
-      <View style={style.card}>
-        <View style={{alignItems: 'center', top: -20}}>
-          <Image
-            source={food.image}
-            style={{height: 80, width: 80, borderRadius: 80 / 2}}
-          />
-        </View>
-        <View style={{marginHorizontal: 10}}>
-          <Text style={{fontSize: 14, fontWeight: 'bold'}}>{food.name}</Text>
-          <Text style={{fontSize: 12, color: 'grey'}}>{food.ingredients}</Text>
-        </View>
-        <View
-          style={{
-            marginHorizontal: 10,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-          }}>
-          <Text style={{fontSize: 18, fontWeight: 'bold'}}>${food.price}</Text>
-        </View>
-        <TouchableHighlight
+      <TouchableHighlight
+        underlayColor="white"
+        activeOpacity={0.9}
+        onPress={() => navigation.navigate('AboutItem', food)}>
+        <View style={style.card}>
+          <View style={{alignItems: 'center', top: -20}}>
+            <Image
+              source={food.image}
+              style={{height: 80, width: 80, borderRadius: 80 / 2}}
+            />
+          </View>
+          <View style={{marginHorizontal: 10}}>
+            <Text style={{fontSize: 14, fontWeight: 'bold'}}>{food.name}</Text>
+            <Text style={{fontSize: 12, color: 'grey'}}>
+              {food.ingredients}
+            </Text>
+          </View>
+          <View
+            style={{
+              marginHorizontal: 10,
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}>
+            <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+              ${food.price}
+            </Text>
+          </View>
+          {/* <TouchableHighlight
           style={{
             marginTop: 10,
             marginHorizontal: 10,
@@ -129,9 +137,9 @@ export default function DashBoard({navigation, route}) {
           underlayColor="#E5E5E5"
           activeOpacity={0.9}
           onPress={() => navigation.navigate('AboutItem', food)}>
-          <Text style={{borderColor: 'black', borderrWidth: 1}}>CART</Text>
-        </TouchableHighlight>
-      </View>
+          <Text style={{borderColor: 'black', borderrWidth: 1}}>CART</Text>*/}
+        </View>
+      </TouchableHighlight>
     );
   };
 
@@ -269,7 +277,7 @@ export default function DashBoard({navigation, route}) {
           keyExtractor={item => '_' + item.id}
           numColumns={3}
         />
-        <FloatingButton openScanList = {() => navigation.navigate('Cart')}/>
+        <FloatingButton openScanList={() => navigation.navigate('Cart')} />
       </SafeAreaView>
     </>
   );
@@ -341,7 +349,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   card: {
-    height: 200,
+    height: 150,
     width: cardWidth,
     marginHorizontal: 10,
     marginBottom: 20,
