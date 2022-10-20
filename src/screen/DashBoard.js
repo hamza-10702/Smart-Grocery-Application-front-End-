@@ -16,6 +16,7 @@ import {
 } from 'react-native-gesture-handler';
 import React, {useState} from 'react';
 import TopSearchBar from '../components/TopSearchBar';
+import FloatingButton from '../components/FloatingButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width} = Dimensions.get('screen');
@@ -94,49 +95,43 @@ export default function DashBoard({navigation, route}) {
 
   const Card = ({food}) => {
     return (
-      <TouchableHighlight
-        underlayColor="white"
-        activeOpacity={0.9}
-        onPress={() => navigation.navigate('AboutItem', food)}>
-        <View style={style.card}>
-          <View style={{alignItems: 'center', top: -20}}>
-            <Image
-              source={food.image}
-              style={{height: 80, width: 80, borderRadius: 80 / 2}}
-            />
-          </View>
-          <View style={{marginHorizontal: 10}}>
-            <Text style={{fontSize: 14, fontWeight: 'bold'}}>{food.name}</Text>
-            <Text style={{fontSize: 12, color: 'grey'}}>
-              {food.ingredients}
-            </Text>
-          </View>
-          <View
-            style={{
-              marginHorizontal: 10,
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-            }}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>
-              ${food.price}
-            </Text>
-          </View>
-          <View
-            style={{
-              marginTop: 10,
-              marginHorizontal: 10,
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-            }}>
-            <View style={[style.addToCartBtn, {backgroundColor: 'red'}]}>
-              <Icon name="add" size={18} color="white" />
-            </View>
-            <View style={[style.addToCartBtn, {backgroundColor: 'green'}]}>
-              <Icon name="compare" size={18} color="white" />
-            </View>
-          </View>
+      <View style={style.card}>
+        <View style={{alignItems: 'center', top: -20}}>
+          <Image
+            source={food.image}
+            style={{height: 80, width: 80, borderRadius: 80 / 2}}
+          />
         </View>
-      </TouchableHighlight>
+        <View style={{marginHorizontal: 10}}>
+          <Text style={{fontSize: 14, fontWeight: 'bold'}}>{food.name}</Text>
+          <Text style={{fontSize: 12, color: 'grey'}}>{food.ingredients}</Text>
+        </View>
+        <View
+          style={{
+            marginHorizontal: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text style={{fontSize: 18, fontWeight: 'bold'}}>${food.price}</Text>
+        </View>
+        <TouchableHighlight
+          style={{
+            marginTop: 10,
+            marginHorizontal: 10,
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderColor: 'black',
+            borderWidth: 1,
+            padding: 10,
+            borderRadius: 10,
+          }}
+          underlayColor="#E5E5E5"
+          activeOpacity={0.9}
+          onPress={() => navigation.navigate('AboutItem', food)}>
+          <Text style={{borderColor: 'black', borderrWidth: 1}}>CART</Text>
+        </TouchableHighlight>
+      </View>
     );
   };
 
@@ -183,7 +178,30 @@ export default function DashBoard({navigation, route}) {
       price: '5.10',
       image: require('../assets/images/c3.jpg'),
     },
+    {
+      id: '7',
+      name: 'Meat Pizza',
+      ingredients: 'Mixed Pizza',
+      price: '8.30',
+      image: require('../assets/images/c1.jpg'),
+    },
+    {
+      id: '8',
+      name: 'Cheese Pizza',
+      ingredients: 'Cheese Pizza',
+      price: '7.10',
+      image: require('../assets/images/c2.jpg'),
+    },
+    {
+      id: '9',
+      name: 'Chicken Burger',
+      ingredients: 'Fried Chicken',
+      price: '5.10',
+      image: require('../assets/images/c3.jpg'),
+    },
   ];
+
+  const [searchText, setSearchText] = useState('');
 
   const openDrawer = () => {
     navigation.openDrawer();
@@ -199,22 +217,24 @@ export default function DashBoard({navigation, route}) {
               style={{flex: 1, fontSize: 18}}
               placeholder="Search grocery"
               onChangeText={text => {
-                console.log(text);
+                setSearchText(text);
               }}
+              value={searchText}
             />
-
-            <TouchableOpacity onPress={() => console.log('clear')}>
-              <View>
-                <Ionicons
-                  name="md-close-circle-sharp"
-                  size={20}
-                  color="black"
-                />
-              </View>
-            </TouchableOpacity>
+            {searchText ? (
+              <TouchableOpacity onPress={() => setSearchText('')}>
+                <View>
+                  <Ionicons
+                    name="md-close-circle-sharp"
+                    size={20}
+                    color="black"
+                  />
+                </View>
+              </TouchableOpacity>
+            ) : null}
           </View>
           <View style={{marginLeft: 5}}>
-            <TouchableOpacity  onPress={() => navigation.navigate('Cart')}>
+            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
               <View>
                 <Ionicons name="cart-outline" size={30} color="red" />
               </View>
@@ -249,6 +269,7 @@ export default function DashBoard({navigation, route}) {
           keyExtractor={item => '_' + item.id}
           numColumns={3}
         />
+        <FloatingButton openScanList = {() => navigation.navigate('Cart')}/>
       </SafeAreaView>
     </>
   );
@@ -287,15 +308,7 @@ const style = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 20,
   },
-  // inputContainer: {
-  //   flex: 1,
-  //   height: 50,
-  //   borderRadius: 10,
-  //   flexDirection: 'row',
-  //   backgroundColor: '#E5E5E5',
-  //   alignItems: 'center',
-  //   paddingHorizontal: 20,
-  // },
+
   sortBtn: {
     width: 50,
     height: 50,

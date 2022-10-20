@@ -7,6 +7,7 @@ import DashBoard from './screen/DashBoard';
 import AboutItem from './screen/AboutItem';
 import SplashScreen from './screen/SplashScreen';
 import ChangePassword from './screen/ChangePassword';
+import ListScan from './screen/ListScan';
 import ModalNative from './components/Modal/Modal';
 import Carousel from './components/carouselSlider';
 import {NavigationContainer} from '@react-navigation/native';
@@ -68,6 +69,16 @@ export default function RootNavigation() {
           ),
         }}
       />
+        {/* <Stack.Screen
+         name="ListScan"
+         component={ListScan}
+        options={{
+          headerBackVisible: true,
+          drawerIcon: ({color}) => (
+            <Ionicons name="ios-home" size={15} color={color} />
+          ),
+        }}
+      /> */}
       </Stack.Navigator>
     </>
   );
