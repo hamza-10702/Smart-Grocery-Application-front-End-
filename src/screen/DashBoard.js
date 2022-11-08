@@ -277,7 +277,7 @@ export default function DashBoard({navigation, route}) {
           keyExtractor={item => '_' + item.id}
           numColumns={3}
         />
-        <FloatingButton openScanList={() => navigation.navigate('ScanImage')} />
+        <FloatingButton openScanList={() => navigation.navigate('CropImagePicker')} />
       </SafeAreaView>
     </>
   );

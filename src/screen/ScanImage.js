@@ -102,7 +102,7 @@ export default function ScanImage() {
       maxWidth: 300,
       maxHeight: 550,
       quality: 1,
-      // includeBase64: true,
+      includeBase64: true,
     };
     launchImageLibrary(options, response => {
       console.log('Response = ', response);

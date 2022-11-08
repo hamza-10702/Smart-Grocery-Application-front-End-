@@ -16,6 +16,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import SideDrawer from './components/Drawer/SideDrawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Cart from './screen/Cart';
+import CropImagePicker from './screen/CropImagePicker';
 
 export default function RootNavigation() {
   const Stack = createNativeStackNavigator();
@@ -84,6 +85,16 @@ export default function RootNavigation() {
         <Stack.Screen
          name="ScanImage"
          component={ScanImage}
+        options={{
+          headerBackVisible: true,
+          drawerIcon: ({color}) => (
+            <Ionicons name="ios-home" size={15} color={color} />
+          ),
+        }}
+      />
+        <Stack.Screen
+         name="CropImagePicker"
+         component={CropImagePicker}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (
