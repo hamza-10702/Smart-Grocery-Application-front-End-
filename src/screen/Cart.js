@@ -4,7 +4,6 @@ import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function Cart({navigation}) {
-
   const CartCard = ({item}) => {
     return (
       <View style={style.cartCard}>
@@ -17,16 +16,14 @@ export default function Cart({navigation}) {
             flex: 1,
           }}>
           <Text style={{fontWeight: 'bold', fontSize: 16}}>{item.name}</Text>
-          <Text style={{fontSize: 13, color: 'grey'}}>
-            {item.ingredients}
-          </Text>
+          <Text style={{fontSize: 13, color: 'grey'}}>{item.ingredients}</Text>
           <Text style={{fontSize: 17, fontWeight: 'bold'}}>${item.price}</Text>
         </View>
         <View style={{marginRight: 20, alignItems: 'center'}}>
           <Text style={{fontWeight: 'bold', fontSize: 18}}>3</Text>
           <View style={style.actionBtn}>
-            <Icon name="remove" size={25} color='white' />
-            <Icon name="add" size={25} color='white' />
+            <Icon name="remove" size={25} color="white" />
+            <Icon name="add" size={25} color="white" />
           </View>
         </View>
       </View>
@@ -103,7 +100,7 @@ export default function Cart({navigation}) {
               <Text style={{fontSize: 18, fontWeight: 'bold'}}>$50</Text>
             </View>
             <View style={{marginHorizontal: 30}}>
-              {/* <PrimaryButton title="CHECKOUT" /> */}
+              {/* <button title="CHECKOUT" /> */}
             </View>
           </View>
         )}
@@ -121,7 +118,7 @@ const style = StyleSheet.create({
   },
   cartCard: {
     height: 100,
-    elevation: 15,
+    elevation: 10,
     borderRadius: 10,
     backgroundColor: 'white',
     marginVertical: 10,
