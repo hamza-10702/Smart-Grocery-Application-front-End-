@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,42 +10,22 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
+import {Button} from 'react-native-paper';
 import {ScrollView} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
 const {width} = Dimensions.get('screen');
+import {LineChart} from 'react-native-chart-kit';
 const cardWidth = width - 20;
 
 export default function AboutItem({navigation, route}) {
   const item = route.params;
 
-  const ComparePriceCard = ({item}) => {
-    return (
-      <View style={style.cartCard}>
-        <Image source={item.image} style={{height: 80, width: 80}} />
-        <View
-          style={{
-            height: 100,
-            marginLeft: 10,
-            paddingVertical: 20,
-            flex: 1,
-          }}>
-          <Text style={{fontWeight: 'bold', fontSize: 16}}>{item.name}</Text>
-          <Text style={{fontSize: 13, color: 'grey'}}>{item.ingredients}</Text>
-          <Text style={{fontSize: 17, fontWeight: 'bold'}}>${item.price}</Text>
-        </View>
-        <View style={{marginRight: 20, alignItems: 'center'}}>
-          <Text style={{fontWeight: 'bold', fontSize: 18}}>3</Text>
-          <View style={style.actionBtn}>
-            <Icon name="remove" size={25} color="white" />
-            <Icon name="add" size={25} color="white" />
-          </View>
-        </View>
-      </View>
-    );
-  };
-  const foods = [
+  // const [xAxisData, setXAxisData] = useState([]);
+  // const [yAxisData, setYAxisData] = useState([]);
+
+  const [foods, setFoods] = useState([
     {
       id: '1',
       name: 'Meat Pizza',
@@ -67,9 +47,101 @@ export default function AboutItem({navigation, route}) {
       price: '5.10',
       image: require('../assets/images/c3.jpg'),
     },
-  ];
+  ]);
+
+  const extractData = () => {};
+  useEffect(() => {
+    extractData();
+  }, []);
+
+  const ChartSection = () => {
+    return (
+      <View>
+        {foods.length > 0 ? (
+          <View
+            style={{
+              marginTop: 20,
+              marginHorizontal: 10,
+              borderColor: '#E5E5E5',
+              width: cardWidth,
+              borderWidth: 1,
+              borderRadius: 15,
+              backgroundColor: '#E5E5E5',
+              alignSelf: 'center',
+              elevation: 3,
+              marginBottom: 10,
+            }}>
+            <View
+              style={{
+                marginHorizontal: 15,
+                marginTop: 20,
+                marginBottom: 10,
+              }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: '700',
+                  color: '#054f4f',
+                }}>
+                PRODUCTS COMPARISON
+              </Text>
+            </View>
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              <LineChart
+                data={{
+                  labels: foods.map(item => {
+                    return item.ingredients;
+                  }),
+                  datasets: [
+                    {
+                      data: foods.map(item => {
+                        return item.price;
+                      }),
+                    },
+                  ],
+                  legend: ['Product Price'], // optional
+                }}
+                width={Dimensions.get('window').width - 40} // from react-native
+                height={200}
+                // fromZero = {true}
+                yAxisLabel="Rs."
+                yAxisInterval={1} // optional, defaults to 1
+                chartConfig={{
+                  backgroundColor: '#508484',
+                  backgroundGradientFrom: '#508484',
+                  backgroundGradientTo: '#9bb9b9',
+                  decimalPlaces: 2, // optional, defaults to 2dp
+                  color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+                  labelColor: (opacity = 1) =>
+                    `rgba(255, 255, 255, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: '4',
+                    strokeWidth: '2',
+                    stroke: '#054f4f',
+                  },
+                }}
+                bezier
+                style={{
+                  marginVertical: 8,
+                  borderRadius: 16,
+                }}
+              />
+            </View>
+          </View>
+        ) : null}
+      </View>
+    );
+  };
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <View>
         <AppStatusBar
           hidden={true}
@@ -91,7 +163,7 @@ export default function AboutItem({navigation, route}) {
                 <Ionicons
                   name="close"
                   size={28}
-                  color="#F9813A"
+                  color="#054f4f"
                   onPress={navigation.goBack}
                 />
               </View>
@@ -124,20 +196,43 @@ export default function AboutItem({navigation, route}) {
           </View>
         </View>
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{paddingBottom: 10}}>
+        <View>
+          <ChartSection />
+        </View>
         <View
           style={{
             marginTop: 20,
             marginHorizontal: 10,
-            // borderColor: '#c4c9d0',
-            height: 300,
+            borderColor: '#E5E5E5',
             width: cardWidth,
-            // borderWidth: 1,
+            borderWidth: 1,
             borderRadius: 15,
-            // backgroundColor: '#c4c9d0',
+            backgroundColor: '#E5E5E5',
             alignSelf: 'center',
+            elevation: 3,
+            marginBottom: 10,
           }}>
-          <View style={{flex: 1}}>
+          <View
+            style={{
+              marginHorizontal: 15,
+              // marginVertical: 20,
+              marginTop: 20,
+              marginBottom: 10,
+            }}>
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: '700',
+                color: '#054f4f',
+              }}>
+              AVAILABLE PRODUCTS
+            </Text>
+            <Text>In Different Platform:</Text>
+          </View>
+          <View>
             {foods.map((item, index) => {
               return (
                 <View key={index} style={style.cartCard}>
@@ -176,25 +271,23 @@ export default function AboutItem({navigation, route}) {
               );
             })}
           </View>
-          
-        </View>
-        <View style={{
-            marginHorizontal: 20,
-            justifyContent: 'center',
-            alignItems: 'center'
-            // marginVertical: 20,
-          }}>
-            <TouchableOpacity>
-              <View style={style.actionBtn}>
-                <Text
-                  style={{
-                    fontWeight: 'bold',
-                    fontSize: 18,
-                    color: 'red',
-                  }}>{`Cart`}</Text>
-              </View>
-            </TouchableOpacity>
+          <View
+            style={{
+              marginHorizontal: 60,
+              marginVertical: 20,
+            }}>
+            <Button
+              style={{
+                backgroundColor: '#054f4f',
+              }}
+              mode="contained"
+              onPress={() => {
+                console.log('CART');
+              }}>
+              ADD TO CART
+            </Button>
           </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -242,6 +335,7 @@ const style = StyleSheet.create({
     marginLeft: 15,
     marginVertical: 10,
     marginTop: -10,
+    color: '#054f4f',
   },
   itemPrice: {
     fontSize: 12,
@@ -254,8 +348,8 @@ const style = StyleSheet.create({
   },
   cartCard: {
     height: 80,
-    // elevation: 3,
-    borderRadius: 5,
+    elevation: 2,
+    borderRadius: 10,
     backgroundColor: 'white',
     marginVertical: 5,
     marginHorizontal: 10,
@@ -265,7 +359,7 @@ const style = StyleSheet.create({
   },
   actionBtn: {
     width: 200,
-    height: 50,
+    // height: 50,
     borderColor: 'red',
     borderWidth: 1,
     borderRadius: 30,

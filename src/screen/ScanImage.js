@@ -11,9 +11,8 @@ import {
 } from 'react-native';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 
-export default function ScanImage() {
-
-  let formData = new FormData();
+export default function ScanImage({navigation, route}) {
+  const checkCameraOrGellary = route.params;
   const [filePath, setFilePath] = useState({});
 
   const requestCameraPermission = async () => {
@@ -72,7 +71,7 @@ export default function ScanImage() {
         console.log('Response = ', response);
 
         if (response.didCancel) {
-          alert('User cancelled camera picker');
+          alert('Are you sure?');
           return;
         } else if (response.errorCode == 'camera_unavailable') {
           alert('Camera not available on device');
@@ -84,14 +83,11 @@ export default function ScanImage() {
           alert(response.errorMessage);
           return;
         }
-        console.log('base64 -> ', response.assets[0].base64);
-        console.log('uri -> ', response.assets[0].uri);
-        console.log('width -> ', response.assets[0].width);
-        console.log('height -> ', response.assets[0].height);
-        console.log('fileSize -> ', response.assets[0].fileSize);
-        console.log('type -> ', response.assets[0].type);
-        console.log('fileName -> ', response.assets[0].fileName);
+
+        console.log('fileName -> ', response.assets[0]);
         setFilePath(response.assets[0]);
+
+        submit();
       });
     }
   };
@@ -120,61 +116,39 @@ export default function ScanImage() {
         alert(response.errorMessage);
         return;
       }
-      // console.log('base64 -> ', response.data);
-      // console.log('uri -> ', response.assets[0].uri);
-      // console.log('width -> ', response.assets[0].base64);
-      // console.log('height -> ', response.assets[0].height);
-      // console.log('fileSize -> ', response.assets[0].fileSize);
-      // console.log('type -> ', response.assets[0].type);
-      // console.log('fileName -> ', response.assets[0].fileName);
-      setFilePath(response.assets[0]);
 
-      // console.log(response.assets[0]);
-      // let data = filePath;
-      formData.append("srcImg",response.assets[0]);
-      // let base64 = 'data:image/jpeg;base64,' + filePath;
-      // console.log(base64);
+      // console.log('fileName -> ', response.assets[0]);
+      setFilePath(response.assets[0]);
     });
   };
 
-  
-
+  const checkParamsValue = () => {
+    console.log(route.params)
+    if (checkCameraOrGellary === 'camera') {
+      console.log(checkCameraOrGellary)
+      captureImage('photo');
+    } else if (checkCameraOrGellary === 'gallery') {
+      console.log(checkCameraOrGellary)
+      chooseFile('photo');
+    }
+  };
+  useEffect(() => {
+    checkParamsValue();
+  });
   const submit = () => {
-    const options = {
-      method: 'POST',
-      headers: {
-        'X-RapidAPI-Key': '8b4043f97dmshfe567c5a6e8b352p147561jsnfaca9c421a92',
-        'X-RapidAPI-Host': 'pen-to-print-handwriting-ocr.p.rapidapi.com',
-      },
-      body: formData,
-    };
-    fetch(
-      'https://pen-to-print-handwriting-ocr.p.rapidapi.com/recognize/',
-      options,
-    )
-      .then(response => response.json())
-      .then(response =>
-        console.log(response.value),
-        // setfirst(response.value),
-      )
-      .catch(err => console.error(err));
+    console.log('Submittt');
   };
 
   return (
     <SafeAreaView style={{flex: 1}}>
-      <Text style={styles.titleText}>
-        Example of Image Picker in React Native
-      </Text>
       <View style={styles.container}>
         <Image
-          base64
           source={{
             uri: 'data:image/jpeg;base64,' + filePath,
           }}
           style={styles.imageStyle}
         />
         <Image source={{uri: filePath.uri}} style={styles.imageStyle} />
-        <Text style={styles.textStyle}>{filePath.uri}</Text>
         <TouchableOpacity
           activeOpacity={0.5}
           style={styles.buttonStyle}
@@ -187,13 +161,6 @@ export default function ScanImage() {
           style={styles.buttonStyle}
           onPress={() => chooseFile('photo')}>
           <Text style={styles.textStyle}>Choose Image</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          activeOpacity={0.5}
-          style={styles.buttonStyle}
-          onPress={() => submit()}>
-          <Text style={styles.textStyle}>Submit</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

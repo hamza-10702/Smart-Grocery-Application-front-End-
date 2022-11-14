@@ -17,8 +17,10 @@ import {
 import React, {useState} from 'react';
 import TopSearchBar from '../components/TopSearchBar';
 import FloatingButton from '../components/FloatingButton';
+import {FloatingAction} from 'react-native-floating-action';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import AppStatusBar from '../components/AppStatusBar';
 const {width} = Dimensions.get('screen');
 const cardWidth = width / 3 - 20;
 const searchInputWidth = width / 1.4;
@@ -214,9 +216,37 @@ export default function DashBoard({navigation, route}) {
   const openDrawer = () => {
     navigation.openDrawer();
   };
+
+  const actions = [
+    {
+      text: 'Use Camera',
+      icon: <Ionicons name="camera-outline" size={20} color="white" />,
+      name: 'use_Camera',
+      position: 2,
+      color: '#054f4f',
+      textColor: '#054f4f',
+      textElevation: 10,
+    },
+    {
+      text: 'Use Gallery',
+      icon: <Ionicons name="image-outline" size={20} color="white" />,
+      name: 'use_Gallery',
+      position: 1,
+      color: '#054f4f',
+      textColor: '#054f4f',
+      textElevation: 10,
+    },
+  ];
+  const [floatButtonClick, setFloatButtonClick] = useState(true);
+  const [FloatingButtonText, setFloatingButtonText] = useState('SCAN');
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
+        <AppStatusBar
+          backgroundColor="white"
+          barStyle="dark-content"
+          hidden={floatButtonClick}
+        />
         <View style={style.header}>
           <Ionicons name="menu-outline" size={28} onPress={openDrawer} />
           <View style={style.inputContainer}>
@@ -244,7 +274,7 @@ export default function DashBoard({navigation, route}) {
           <View style={{marginLeft: 5}}>
             <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
               <View>
-                <Ionicons name="cart-outline" size={30} color="red" />
+                <Ionicons name="cart-outline" size={30} color="#054f4f" />
               </View>
             </TouchableOpacity>
           </View>
@@ -261,11 +291,7 @@ export default function DashBoard({navigation, route}) {
             marginTop: 40,
             flexDirection: 'row',
             paddingHorizontal: 20,
-          }}>
-          {/* <View style={style.sortBtn}>
-            <Ionicons name="scan-outline" size={28} color="white" />
-          </View> */}
-        </View>
+          }}></View>
         <View>
           <ListCategories />
         </View>
@@ -277,7 +303,33 @@ export default function DashBoard({navigation, route}) {
           keyExtractor={item => '_' + item.id}
           numColumns={3}
         />
-        <FloatingButton openScanList={() => navigation.navigate('CropImagePicker')} />
+        <FloatingAction
+          listenKeyboard={true}
+          floatingIcon={
+            <Text style={{color: 'white'}}>{FloatingButtonText}</Text>
+          }
+          showBackground={true}
+          color="#054f4f"
+          actions={actions}
+          onOpen={() => {
+            setFloatingButtonText('CLOSE');
+          }}
+          onClose={() => {
+            setFloatingButtonText('SCAN');
+          }}
+          onPressItem={name => {
+            if (name === 'use_Camera') {
+              navigation.navigate('ScanImage' , 'camera');
+            } else if (name === 'use_Gallery') {
+              navigation.navigate('ScanImage' , 'gallery');
+            }
+          }}
+          onPressMain={() => {
+            // setFloatButtonClick(!floatButtonClick);
+            console.log(`Main Button`);
+          }}
+        />
+        {/* <FloatingButton openScanList={() => navigation.navigate('ScanImage')} /> */}
       </SafeAreaView>
     </>
   );

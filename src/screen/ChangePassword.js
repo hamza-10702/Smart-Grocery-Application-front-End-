@@ -30,7 +30,7 @@ export default function ChangePassword() {
 
   return (
     <View style={{flex: 1, backgroundColor: '#775cb4'}}>
-      <AppStatusBar backgroundColor="white" barStyle="dark-content" />
+      <AppStatusBar backgroundColor="white" barStyle="dark-content"  />
       <View style={{ height: '30%'}}>
         <View
           style={{
