@@ -5,6 +5,7 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+  SafeAreaView
 } from 'react-native';
 import React, {useState} from 'react';
 import {Dimensions} from 'react-native';
@@ -14,8 +15,8 @@ import {Formik, Form, Field, ErrorMessage} from 'formik';
 import {loginValidationSchema} from '../Schema/index';
 import AwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
 import AppStatusBar from '../components/AppStatusBar';
+
 
 const initialValues = {
   password: '',
@@ -26,10 +27,9 @@ export default function ChangePassword() {
   const navigation = useNavigation();
 
   const [passwordVisible, setPasswordVisible] = useState(true);
-  const [modalVisible, setModalVisible] = useState(false);
 
   return (
-    <View style={{flex: 1, backgroundColor: '#775cb4'}}>
+    <SafeAreaView style={{flex: 1, backgroundColor: '#82a7a7'}}>
       <AppStatusBar backgroundColor="white" barStyle="dark-content"  />
       <View style={{ height: '30%'}}>
         <View
@@ -149,7 +149,7 @@ export default function ChangePassword() {
           </Formik>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

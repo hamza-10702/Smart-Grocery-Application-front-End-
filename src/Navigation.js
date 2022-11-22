@@ -16,6 +16,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import SideDrawer from './components/Drawer/SideDrawer';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Cart from './screen/Cart';
+import CustomInput from './screen/CustomInput';
 import CropImagePicker from './screen/CropImagePicker';
 
 export default function RootNavigation() {
@@ -93,8 +94,8 @@ export default function RootNavigation() {
         }}
       />
         <Stack.Screen
-         name="CropImagePicker"
-         component={CropImagePicker}
+         name="CustomInput"
+         component={CustomInput}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (

@@ -18,6 +18,7 @@ import Header from '../../components/login/Header';
 import Toaster, {toastConfig} from '../../components/Toaster/Toaster';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {useEffect} from 'react';
+import {useSignUpMutation} from '../../services/userAuthentication';
 
 const initialValues = {
   fullName: '',
@@ -27,9 +28,47 @@ const initialValues = {
 };
 
 export default function Registger() {
+  const baseURL = 'https://smart-grocery-application.herokuapp.com';
+  const headers = {
+    'Content-Type': 'application/json',
+  };
+
   const navigation = useNavigation();
   const [passwordVisible, setPasswordVisible] = useState(true);
 
+  const [registerUser] = useSignUpMutation();
+
+  const handleSubmit = async values => {
+    try {
+      const {fullName, email, password, confirmPassword} = values;
+      if (fullName && email && password && confirmPassword) {
+        if (password === confirmPassword) {
+          const formData = {fullName, email, password, confirmPassword};
+          console.log(formData, 'form');
+
+          const response = await registerUser(formData);
+          // const response = await axios.post(baseURL, formData, {headers});
+          if (response.data.status === 'Success') {
+            console.log(response);
+          } else {
+            console.log(response.data.Message);
+          }
+        } else {
+          console.log("Password and Confirm Password doesn't match");
+          // Toast.show({
+          //   type: 'warning',
+          //   position: 'top',
+          //   topOffset: 0,
+          //   text1: "Password and Confirm Password doesn't match",
+          // });
+        }
+      } else {
+        console.log('All Fields are required');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <ScrollView style={styles.container}>
       <View>
@@ -41,14 +80,7 @@ export default function Registger() {
           validationSchema={signUpValidationSchema}
           initialValues={initialValues}
           onSubmit={values => console.log(values)}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            isValid,
-          }) => (
+          {({handleChange, handleBlur, values, errors, isValid}) => (
             <View>
               <View>
                 <View style={{flexDirection: 'row'}}>
@@ -158,12 +190,13 @@ export default function Registger() {
               </View>
               <View style={styles.loginButton}>
                 <Button
+                  disabled={!isValid}
                   style={{
                     backgroundColor: '#054f4f',
                   }}
                   mode="contained"
                   onPress={() => {
-                    // navigation.navigate('SideDrawer')
+                    handleSubmit(values);
                   }}>
                   SIGN UP
                 </Button>
@@ -192,8 +225,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     marginTop: 20,
     borderRadius: 10,
-    elevation:5,
-    marginBottom: 5
+    elevation: 5,
+    marginBottom: 5,
   },
   textInput: {
     backgroundColor: 'white',

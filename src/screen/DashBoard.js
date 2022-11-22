@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   View,
+  PermissionsAndroid,
   KeyboardAvoidingView,
 } from 'react-native';
 import {
@@ -14,86 +15,56 @@ import {
   TouchableHighlight,
   TouchableOpacity,
 } from 'react-native-gesture-handler';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TopSearchBar from '../components/TopSearchBar';
-import FloatingButton from '../components/FloatingButton';
 import {FloatingAction} from 'react-native-floating-action';
+import FloatingButton from '../components/FloatingButton';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
+import Swiper from 'react-native-swiper';
 const {width} = Dimensions.get('screen');
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import {useScanListMutation} from '../services/userAuthentication';
+import {useAllProductQuery} from '../services/userAuthentication';
 const cardWidth = width / 3 - 20;
 const searchInputWidth = width / 1.4;
+import {foods} from '../utils/food';
+import {categories} from '../utils/categories';
 
 export default function DashBoard({navigation, route}) {
-  const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
+  const [searchText, setSearchText] = useState('');
 
-  const ListCategories = () => {
-    const categories = [
-      {
-        id: '1',
-        name: 'pizza',
-        image: require('../assets/images/c1.jpg'),
-      },
-      {
-        id: '2',
-        name: 'Burger',
-        image: require('../assets/images/c1.jpg'),
-      },
-      {
-        id: '3',
-        name: 'Sushi',
-        image: require('../assets/images/c1.jpg'),
-      },
-      {
-        id: '4',
-        name: 'Salad',
-        image: require('../assets/images/c1.jpg'),
-      },
-    ];
-
-    return (
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={style.categoriesListContainer}>
-        {categories.map((category, index) => (
-          <TouchableOpacity
-            key={index}
-            activeOpacity={0.8}
-            onPress={() => setSelectedCategoryIndex(index)}>
-            <View
-              style={{
-                backgroundColor:
-                  selectedCategoryIndex == index ? 'red' : 'green',
-                ...style.categoryBtn,
-              }}>
-              <View style={style.categoryBtnImgCon}>
-                <Image
-                  source={category.image}
-                  style={{
-                    height: 35,
-                    width: 35,
-                    resizeMode: 'cover',
-                    borderRadius: 35 / 2,
-                  }}
-                />
-              </View>
-              <Text
-                style={{
-                  fontSize: 15,
-                  fontWeight: 'bold',
-                  marginLeft: 10,
-                  color: selectedCategoryIndex == index ? 'white' : 'black',
-                }}>
-                {category.name}
-              </Text>
-            </View>
-          </TouchableOpacity>
-        ))}
-      </ScrollView>
-    );
+  const openDrawer = () => {
+    navigation.openDrawer();
   };
+
+  useEffect(() => {
+    console.log('Camera');
+  });
+
+  const actions = [
+    {
+      text: 'Use Camera',
+      icon: <Ionicons name="camera-outline" size={20} color="white" />,
+      name: 'use_Camera',
+      position: 2,
+      color: '#054f4f',
+      textColor: '#054f4f',
+      textElevation: 10,
+    },
+    {
+      text: 'Use Gallery',
+      icon: <Ionicons name="image-outline" size={20} color="white" />,
+      name: 'use_Gallery',
+      position: 1,
+      color: '#054f4f',
+      textColor: '#054f4f',
+      textElevation: 10,
+    },
+  ];
+
+  const [FloatingButtonText, setFloatingButtonText] = useState('SCAN');
 
   const Card = ({food}) => {
     return (
@@ -124,128 +95,20 @@ export default function DashBoard({navigation, route}) {
               ${food.price}
             </Text>
           </View>
-          {/* <TouchableHighlight
-          style={{
-            marginTop: 10,
-            marginHorizontal: 10,
-            flexDirection: 'row',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderColor: 'black',
-            borderWidth: 1,
-            padding: 10,
-            borderRadius: 10,
-          }}
-          underlayColor="#E5E5E5"
-          activeOpacity={0.9}
-          onPress={() => navigation.navigate('AboutItem', food)}>
-          <Text style={{borderColor: 'black', borderrWidth: 1}}>CART</Text>*/}
         </View>
       </TouchableHighlight>
     );
   };
 
-  const foods = [
-    {
-      id: '1',
-      name: 'Meat Pizza',
-      ingredients: 'Mixed Pizza',
-      price: '8.30',
-      image: require('../assets/images/c1.jpg'),
-    },
-    {
-      id: '2',
-      name: 'Cheese Pizza',
-      ingredients: 'Cheese Pizza',
-      price: '7.10',
-      image: require('../assets/images/c2.jpg'),
-    },
-    {
-      id: '3',
-      name: 'Chicken Burger',
-      ingredients: 'Fried Chicken',
-      price: '5.10',
-      image: require('../assets/images/c3.jpg'),
-    },
-    {
-      id: '4',
-      name: 'Meat Pizza',
-      ingredients: 'Mixed Pizza',
-      price: '8.30',
-      image: require('../assets/images/c1.jpg'),
-    },
-    {
-      id: '5',
-      name: 'Cheese Pizza',
-      ingredients: 'Cheese Pizza',
-      price: '7.10',
-      image: require('../assets/images/c2.jpg'),
-    },
-    {
-      id: '6',
-      name: 'Chicken Burger',
-      ingredients: 'Fried Chicken',
-      price: '5.10',
-      image: require('../assets/images/c3.jpg'),
-    },
-    {
-      id: '7',
-      name: 'Meat Pizza',
-      ingredients: 'Mixed Pizza',
-      price: '8.30',
-      image: require('../assets/images/c1.jpg'),
-    },
-    {
-      id: '8',
-      name: 'Cheese Pizza',
-      ingredients: 'Cheese Pizza',
-      price: '7.10',
-      image: require('../assets/images/c2.jpg'),
-    },
-    {
-      id: '9',
-      name: 'Chicken Burger',
-      ingredients: 'Fried Chicken',
-      price: '5.10',
-      image: require('../assets/images/c3.jpg'),
-    },
-  ];
-
-  const [searchText, setSearchText] = useState('');
-
-  const openDrawer = () => {
-    navigation.openDrawer();
-  };
-
-  const actions = [
-    {
-      text: 'Use Camera',
-      icon: <Ionicons name="camera-outline" size={20} color="white" />,
-      name: 'use_Camera',
-      position: 2,
-      color: '#054f4f',
-      textColor: '#054f4f',
-      textElevation: 10,
-    },
-    {
-      text: 'Use Gallery',
-      icon: <Ionicons name="image-outline" size={20} color="white" />,
-      name: 'use_Gallery',
-      position: 1,
-      color: '#054f4f',
-      textColor: '#054f4f',
-      textElevation: 10,
-    },
-  ];
-  const [floatButtonClick, setFloatButtonClick] = useState(true);
-  const [FloatingButtonText, setFloatingButtonText] = useState('SCAN');
   return (
     <>
       <SafeAreaView style={{flex: 1, backgroundColor: 'white'}}>
         <AppStatusBar
-          backgroundColor="white"
+          backgroundColor={
+            FloatingButtonText === 'SCAN' ? 'white' : '#00000099'
+          }
           barStyle="dark-content"
-          hidden={floatButtonClick}
+          hidden={FloatingButtonText === 'SCAN' ? false : true}
         />
         <View style={style.header}>
           <Ionicons name="menu-outline" size={28} onPress={openDrawer} />
@@ -265,30 +128,55 @@ export default function DashBoard({navigation, route}) {
                   <Ionicons
                     name="md-close-circle-sharp"
                     size={20}
-                    color="black"
+                    color="#054f4f"
                   />
                 </View>
               </TouchableOpacity>
             ) : null}
           </View>
           <View style={{marginLeft: 5}}>
-            <TouchableOpacity onPress={() => navigation.navigate('Cart')}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate('Cart');
+              }}>
               <View>
                 <Ionicons name="cart-outline" size={30} color="#054f4f" />
               </View>
             </TouchableOpacity>
           </View>
         </View>
-        <View style={style.imageSlider}>
-          <View>
-            <Text style={{marginTop: 5, fontSize: 22, color: 'grey'}}>
-              Yahan per slider aaega
-            </Text>
-          </View>
+        <View style={style.sliderContainer}>
+          <Swiper
+            autoplay
+            horizontal={false}
+            height={200}
+            activeDotColor="#054f4f">
+            <View style={style.slide}>
+              <Image
+                source={require('../assets/images/c1.jpg')}
+                resizeMode="cover"
+                style={style.sliderImage}
+              />
+            </View>
+            <View style={style.slide}>
+              <Image
+                source={require('../assets/images/c2.jpg')}
+                resizeMode="cover"
+                style={style.sliderImage}
+              />
+            </View>
+            <View style={style.slide}>
+              <Image
+                source={require('../assets/images/c3.jpg')}
+                resizeMode="cover"
+                style={style.sliderImage}
+              />
+            </View>
+          </Swiper>
         </View>
         <View
           style={{
-            marginTop: 40,
+            marginTop: 20,
             flexDirection: 'row',
             paddingHorizontal: 20,
           }}></View>
@@ -304,7 +192,7 @@ export default function DashBoard({navigation, route}) {
           numColumns={3}
         />
         <FloatingAction
-          listenKeyboard={true}
+          listenKeyboard={false}
           floatingIcon={
             <Text style={{color: 'white'}}>{FloatingButtonText}</Text>
           }
@@ -329,11 +217,55 @@ export default function DashBoard({navigation, route}) {
             console.log(`Main Button`);
           }}
         />
-        {/* <FloatingButton openScanList={() => navigation.navigate('ScanImage')} /> */}
       </SafeAreaView>
     </>
   );
 }
+
+const ListCategories = () => {
+  const [selectedCategoryIndex, setSelectedCategoryIndex] = React.useState(0);
+  return (
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false}
+      contentContainerStyle={style.categoriesListContainer}>
+      {categories.map((category, index) => (
+        <TouchableOpacity
+          key={index}
+          activeOpacity={0.8}
+          onPress={() => setSelectedCategoryIndex(index)}>
+          <View
+            style={{
+              backgroundColor:
+                selectedCategoryIndex == index ? '#125858' : '#82a7a7',
+              ...style.categoryBtn,
+            }}>
+            <View style={style.categoryBtnImgCon}>
+              <Image
+                source={category.image}
+                style={{
+                  height: 35,
+                  width: 35,
+                  resizeMode: 'cover',
+                  borderRadius: 35 / 2,
+                }}
+              />
+            </View>
+            <Text
+              style={{
+                fontSize: 15,
+                fontWeight: 'bold',
+                marginLeft: 10,
+                color: selectedCategoryIndex == index ? 'white' : 'black',
+              }}>
+              {category.name}
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+};
 
 const style = StyleSheet.create({
   header: {
@@ -362,12 +294,6 @@ const style = StyleSheet.create({
     paddingHorizontal: 20,
     marginHorizontal: 10,
   },
-  imageSlider: {
-    marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-  },
 
   sortBtn: {
     width: 50,
@@ -379,7 +305,8 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
   categoriesListContainer: {
-    paddingVertical: 30,
+    // paddingTop: 30,
+    paddingBottom: 10,
     alignItems: 'center',
     paddingHorizontal: 10,
   },
@@ -417,5 +344,29 @@ const style = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
+  },
+
+  sliderContainer: {
+    height: 200,
+    width: '90%',
+    // marginTop: 10,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    borderRadius: 8,
+  },
+
+  wrapper: {},
+
+  slide: {
+    flex: 1,
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    borderRadius: 8,
+  },
+  sliderImage: {
+    height: '100%',
+    width: '100%',
+    alignSelf: 'center',
+    borderRadius: 8,
   },
 });

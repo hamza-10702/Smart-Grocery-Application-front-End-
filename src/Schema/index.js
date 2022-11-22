@@ -4,6 +4,7 @@ export const signUpValidationSchema = yup.object().shape({
     fullName: yup
       .string()
       .matches(/(\w.+\s).+/, 'Enter at least 2 names')
+      .min(3,({min}) => `Name must be at least ${min} characters`)
       .required('Full name is required'),
     // phoneNumber: yup
     //   .string()

@@ -2,14 +2,16 @@ import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
 
 export const userAuthenticationAPI = createApi({
   reducerPath: 'userAuthenticationAPI',
-  baseQuery: fetchBaseQuery({baseUrl: '/fakeApi'}),
+  baseQuery: fetchBaseQuery({
+    baseUrl: 'https://smart-grocery-application.herokuapp.com/',
+  }),
 
   endpoints: builder => ({
     // for sign up post  Api
-    signUpApi: builder.mutation({
+    signUp: builder.mutation({
       query: userSignUpData => {
         return {
-          url: 'yehan end point aaega',
+          url: 'signup',
           method: 'POST',
           body: userSignUpData,
           headers: {
@@ -23,7 +25,7 @@ export const userAuthenticationAPI = createApi({
     login: builder.mutation({
       query: userLoginData => {
         return {
-          url: 'yahan login ka end point aaega',
+          url: 'signin',
           method: 'POST',
           body: userLoginData,
           headers: {
@@ -46,9 +48,38 @@ export const userAuthenticationAPI = createApi({
       },
     }),
 
-    // other API methods
+    allProduct: builder.query({
+      query: () => {
+        return {
+          url: 'product',
+          method: 'GET',
+          headers: {
+            // authorization: `Bearer ${token}`,
+          },
+        };
+      },
+    }),
+
+    scanList: builder.mutation({
+      query: formData => {
+        return {
+          url: 'scan-image',
+          method: 'POST',
+          body: formData,
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        };
+      },
+    }),
   }),
 });
 
-export const {useSignUpApiMutation , useLoginMutation , useLoggedInUserQuery} =
-  userAuthenticationAPI;
+export const {
+  useSignUpMutation,
+  useLoginMutation,
+  useLoggedInUserQuery,
+  useScanListMutation,
+  useAllProductQuery,
+} = userAuthenticationAPI;

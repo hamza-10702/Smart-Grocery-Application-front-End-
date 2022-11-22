@@ -17,7 +17,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import Header from '../../components/login/Header';
 import ModalNative from '../../components/Modal/Modal';
 import Toaster, {toastConfig} from '../../components/Toaster/Toaster';
-import AppStatusBar from '../../components/AppStatusBar' 
+import AppStatusBar from '../../components/AppStatusBar';
 import Toast, {BaseToast, ErrorToast} from 'react-native-toast-message';
 import {useEffect} from 'react';
 
@@ -32,6 +32,37 @@ export default function Login() {
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const handleSubmit = async values => {
+    try{
+    if (email && password) {
+      const formData = {email, password};
+      const res = await loginUser(formData);
+      if (res.data.status === 'success') {
+        await storeToken(res.data.token); // Store Token in Storage
+        clearTextInput();
+        navigation.navigate('UserPanelTab');
+      }
+      if (res.data.status === 'failed') {
+        // Toast.show({
+        //   type: 'warning',
+        //   position: 'top',
+        //   topOffset: 0,
+        //   text1: res.data.message
+        // })
+      }
+    } else {
+      // Toast.show({
+      //   type: 'warning',
+      //   position: 'top',
+      //   topOffset: 0,
+      //   text1: "All fields are Required"
+      // })
+    }
+  }catch(error){
+
+  }
+  };
+
   return (
     <View style={styles.container}>
       <View>
@@ -42,14 +73,7 @@ export default function Login() {
           validationSchema={loginValidationSchema}
           initialValues={initialValues}
           onSubmit={values => console.log(values)}>
-          {({
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            values,
-            errors,
-            isValid,
-          }) => (
+          {({handleChange, handleBlur, values, errors, isValid}) => (
             <View>
               <View>
                 <View style={{flexDirection: 'row'}}>
@@ -81,7 +105,7 @@ export default function Login() {
                   </View>
                   <View style={{flex: 1}}>
                     <TextInput
-                      type="flat"
+                      mode="flat"
                       name="password"
                       label="Password"
                       style={styles.textInput}

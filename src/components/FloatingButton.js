@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useState , useEffect} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,33 +8,60 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
+import {FloatingAction} from 'react-native-floating-action';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-export default function FloatingButton(props) {
-  return (
-    <View>
-      <TouchableOpacity
-        style={{
-          borderWidth: 1,
-          borderColor: 'red',
-          alignItems: 'center',
-          width: 50,
-          position: 'absolute',
-          bottom: 30,
-          right: 20,
-          height: 50,
-          backgroundColor: 'red',
-          borderRadius: 100,
-          elevation: 5,
-          justifyContent: 'center',
-        }}
-        onPress = {props.openScanList}
+export default function FloatingButton() {
+  const actions = [
+    {
+      text: 'Use Camera',
+      icon: <Ionicons name="camera-outline" size={20} color="white" />,
+      name: 'use_Camera',
+      position: 2,
+      color: '#054f4f',
+      textColor: '#054f4f',
+      textElevation: 10,
+    },
+    {
+      text: 'Use Gallery',
+      icon: <Ionicons name="image-outline" size={20} color="white" />,
+      name: 'use_Gallery',
+      position: 1,
+      color: '#054f4f',
+      textColor: '#054f4f',
+      textElevation: 10,
+    },
+  ];
+  const [FloatingButtonText, setFloatingButtonText] = useState('SCAN');
 
-        activeOpacity={0.8}
-        >
-        <Ionicons name="scan-outline" size={28} color="white" />
-      </TouchableOpacity>
-    </View>
+  return (
+    <SafeAreaView>
+      <FloatingAction
+        listenKeyboard={true}
+        floatingIcon={
+          <Text style={{color: 'white'}}>{FloatingButtonText}</Text>
+        }
+        showBackground={true}
+        color="#054f4f"
+        actions={actions}
+        onOpen={() => {
+          setFloatingButtonText('CLOSE');
+        }}
+        onClose={() => {
+          setFloatingButtonText('SCAN');
+        }}
+        onPressItem={name => {
+          if (name === 'use_Camera') {
+            navigation.navigate('ScanImage', 'camera');
+          } else if (name === 'use_Gallery') {
+            navigation.navigate('ScanImage', 'gallery');
+          }
+        }}
+        onPressMain={() => {
+          console.log(`Main Button`);
+        }}
+      />
+    </SafeAreaView>
   );
 }

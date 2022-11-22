@@ -273,12 +273,16 @@ export default function AboutItem({navigation, route}) {
           </View>
           <View
             style={{
-              marginHorizontal: 60,
+              // marginHorizontal: 60,
               marginVertical: 20,
+              justifyContent: 'center',
+              alignItems: 'center'
             }}>
             <Button
               style={{
                 backgroundColor: '#054f4f',
+                borderRadius: 30,
+                width: '50%'
               }}
               mode="contained"
               onPress={() => {
