@@ -61,11 +61,11 @@ export const userAuthenticationAPI = createApi({
     }),
 
     scanList: builder.mutation({
-      query: formData => {
+      query: imgData => {
         return {
           url: 'scan-image',
           method: 'POST',
-          body: formData,
+          body: imgData,
           headers: {
             Accept: 'application/json',
             'Content-Type': 'multipart/form-data',

@@ -13,63 +13,18 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 const {width} = Dimensions.get('screen');
 const cardWidth = width;
 
-const checkInput = [
-  {
-    key: 0,
-    value: 'Aaloo',
-  },
-  {
-    key: 1,
-    value: 'Cheese',
-  },
-  {
-    key: 2,
-    value: 'Tomatoo',
-  },
-  {
-    key: 3,
-    value: 'Onion',
-  },
-  {
-    key: 4,
-    value: 'Peanuts',
-  },
-  {
-    key: 5,
-    value: 'Bhaji',
-  },
-  {
-    key: 0,
-    value: 'Aaloo',
-  },
-  {
-    key: 1,
-    value: 'Cheese',
-  },
-  {
-    key: 2,
-    value: 'Tomatoo',
-  },
-  {
-    key: 3,
-    value: 'Onion',
-  },
-  {
-    key: 4,
-    value: 'Peanuts',
-  },
-  {
-    key: 5,
-    value: 'Bhaji',
-  },
-];
-export default function CustomInput() {
+const CustomInput = React.memo(({imageResponse}) => {
   const [inputs, setInputs] = useState([]);
+  const [searchProducts, setSearchProducts] = useState([]);
 
   const addHandler = () => {
     const input = [];
-    checkInput.map(value => {
-      input.push(value);
+    imageResponse?.map((value, index) => {
+      console.log(value)
+      input.push({
+        key: index,
+        value: value,
+      });
     });
     setInputs(input);
   };
@@ -186,8 +141,10 @@ export default function CustomInput() {
       </View>
     </SafeAreaView>
   );
-}
+})
 
+
+export default CustomInput;
 const styles = StyleSheet.create({
   container: {
     marginTop: 20,
