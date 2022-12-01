@@ -4,7 +4,6 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import CustomDrawer from './CustomDrawer';
 import DashBoard from '../../screen/DashBoard';
-import ChangePassword from '../../screen/ChangePassword';
 import SplashScreen from '../../screen/SplashScreen';
 import TopSearchBar from '../TopSearchBar';
 

@@ -88,7 +88,7 @@ export default function CustomDrawer({...props}) {
           icon={({color, size}) => (
             <Ionicons color={color} size={15} name={`ios-home`} />
           )}
-          onPress={() => navigation.navigate('ChangePassword')}
+          onPress={() => navigation.navigate('Landing')}
         />
         <DrawerItem
           label="Splash Screen"
