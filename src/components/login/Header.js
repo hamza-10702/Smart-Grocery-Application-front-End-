@@ -40,7 +40,7 @@ export default function Header({name}) {
       <View>
         <Image
           style={styles.headerImage}
-          source={require('../../assets/images/header-image.jpg')}
+          source={require('../../assets/images/v2.png')}
         />
       </View>
     </View>
@@ -50,6 +50,7 @@ export default function Header({name}) {
 const styles = StyleSheet.create({
   contianer: {
     // marginTop: 30,
+    // backgroundColor:'red',
     height: 260,
   },
 
@@ -58,6 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     marginRight: 20,
+    marginTop:30,
     alignItems: 'center',
   },
   headerButtonText: {

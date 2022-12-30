@@ -1,9 +1,11 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react';
+import { baseURl } from '../utils/base_URL';
 
 export const userAuthenticationAPI = createApi({
   reducerPath: 'userAuthenticationAPI',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://smart-grocery-application.herokuapp.com/',
+    // baseUrl: 'https://smart-grocery-application.herokuapp.com/',
+    baseUrl: baseURl,
   }),
 
   endpoints: builder => ({

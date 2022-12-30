@@ -1,0 +1,1 @@
+export const baseURl = `https://eager-states-behave-203-81-218-135.loca.lt/`

@@ -4,16 +4,17 @@ import {
   SafeAreaView,
   StyleSheet,
   Dimensions,
+  BackHandler,
   TouchableOpacity,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
-import {Colors, TextInput, Button} from 'react-native-paper';
+import React, { useState, useEffect } from 'react';
+import { Colors, TextInput, Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const {width} = Dimensions.get('screen');
+const { width } = Dimensions.get('screen');
 const cardWidth = width;
 
-const CustomInput = React.memo(({imageResponse}) => {
+const CustomInput = ({ imageResponse }) => {
   const [inputs, setInputs] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
 
@@ -41,15 +42,35 @@ const CustomInput = React.memo(({imageResponse}) => {
     setInputs(input);
   };
 
+  const addManually = () => {
+    const input = [];
+    input.push({
+      key: 0,
+      value: "",
+    });
+    setInputs(input);
+  }
+
+  const backAction = () => {
+    navigation.goBack();
+    return true
+  };
+
   useEffect(() => {
     addHandler();
+    console.log("HIIII")
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
 
     return () => {
       setInputs([]);
+      backHandler.remove();
     };
   }, []);
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View
           style={{
@@ -91,7 +112,7 @@ const CustomInput = React.memo(({imageResponse}) => {
                       roundness: 10,
                     }}
                     value={input.value}
-                    onChangeText={text => inputHandler(text, input.key)}
+                    onChangeText={text => inputHandler(text, key)}
                   />
 
                   <TouchableOpacity
@@ -107,13 +128,13 @@ const CustomInput = React.memo(({imageResponse}) => {
                 </View>
               );
             })
+
           ) : (
             <View>
               <Text
                 style={{
                   marginHorizontal: 15,
                   marginVertical: 20,
-                  color: 'red',
                   fontSize: 16,
                   alignSelf: 'center',
                 }}>
@@ -121,6 +142,7 @@ const CustomInput = React.memo(({imageResponse}) => {
               </Text>
             </View>
           )}
+
         </View>
         {inputs.length > 0 ? (
           <Button
@@ -129,7 +151,7 @@ const CustomInput = React.memo(({imageResponse}) => {
               borderRadius: 30,
               width: '50%',
               alignSelf: 'center',
-              marginBottom: 10,
+              // marginBottom: 10,
             }}
             mode="contained"
             onPress={() => {
@@ -138,10 +160,53 @@ const CustomInput = React.memo(({imageResponse}) => {
             ADD TO CART
           </Button>
         ) : null}
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-evenly',
+            alignItems: 'center',
+            margin: 10,
+            // backgroundColor: '#cddcdc',
+            backgroundColor: '#dae5e5',
+            borderRadius: 15,
+            padding: 10,
+            width: cardWidth - 50,
+          }}
+        >
+          <Text
+            style={{
+              fontWeight: '700',
+              color: '#054f4f',
+              fontSize: 16,
+              // backgroundColor: 'red',
+              marginBottom: 7
+
+            }}
+          >Add Products Manually:</Text>
+          <Button
+            style={{
+
+
+              width: '20%',
+              alignSelf: 'center',
+              borderWidth: 1,
+              borderColor: '#054f4f',
+              borderRadius: 10,
+
+            }}
+            mode="Outlined"
+            color="#054f4f"
+            onPress={() => {
+              console.log('CART');
+            }}>
+            ADD
+          </Button>
+
+        </View>
       </View>
     </SafeAreaView>
   );
-})
+}
 
 
 export default CustomInput;

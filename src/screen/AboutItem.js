@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,57 +7,57 @@ import {
   Text,
   Image,
   ImageBackground,
+  BackHandler,
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import {Button} from 'react-native-paper';
-import {ScrollView} from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
+import { ScrollView } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
-const {width} = Dimensions.get('screen');
-import {LineChart} from 'react-native-chart-kit';
+const { width } = Dimensions.get('screen');
+import { LineChart, BarChart } from 'react-native-chart-kit';
 const cardWidth = width - 20;
 
-export default function AboutItem({navigation, route}) {
+export default function AboutItem({ navigation, route }) {
   const item = route.params;
 
-  // const [xAxisData, setXAxisData] = useState([]);
-  // const [yAxisData, setYAxisData] = useState([]);
+  const [minPrice , seMinPrice] = useState(0)
 
-  const [foods, setFoods] = useState([
-    {
-      id: '1',
-      name: 'Meat Pizza',
-      ingredients: 'Mixed Pizza',
-      price: '8.30',
-      image: require('../assets/images/c1.jpg'),
-    },
-    {
-      id: '2',
-      name: 'Cheese Pizza',
-      ingredients: 'Cheese Pizza',
-      price: '7.10',
-      image: require('../assets/images/c2.jpg'),
-    },
-    {
-      id: '3',
-      name: 'Chicken Burger',
-      ingredients: 'Fried Chicken',
-      price: '5.10',
-      image: require('../assets/images/c3.jpg'),
-    },
-  ]);
+  const getLowestPrice = ()=>{
+    let temp;
+    item.productCompany.map((data, index) => {
+      temp = item.productCompany[0].companyPrice
+      if (data.companyPrice < temp) {
+        temp = data.companyPrice
+      }
+    })
 
-  const extractData = () => {};
+    seMinPrice(temp)
+  }
+
+
+
+
+  const backAction = () => {
+    navigation.goBack();
+    return true
+  };
   useEffect(() => {
-    extractData();
+    getLowestPrice()
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   const ChartSection = () => {
     return (
       <View>
-        {foods.length > 0 ? (
+        {item.productCompany.length > 0 ? (
           <View
             style={{
               marginTop: 20,
@@ -91,21 +91,21 @@ export default function AboutItem({navigation, route}) {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              <LineChart
+              <BarChart
                 data={{
-                  labels: foods.map(item => {
-                    return item.ingredients;
+                  labels: item.productCompany.map(label => {
+                    return label.companyName;
                   }),
                   datasets: [
                     {
-                      data: foods.map(item => {
-                        return item.price;
+                      data: item.productCompany.map(price => {
+                        return price.companyPrice;
                       }),
                     },
                   ],
                   legend: ['Product Price'], // optional
                 }}
-                width={Dimensions.get('window').width - 40} // from react-native
+                width={Dimensions.get('window').width - 30} // from react-native
                 height={200}
                 // fromZero = {true}
                 yAxisLabel="Rs."
@@ -114,7 +114,7 @@ export default function AboutItem({navigation, route}) {
                   backgroundColor: '#508484',
                   backgroundGradientFrom: '#508484',
                   backgroundGradientTo: '#9bb9b9',
-                  decimalPlaces: 2, // optional, defaults to 2dp
+                  decimalPlaces: 0, // optional, defaults to 2dp
                   color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
                   labelColor: (opacity = 1) =>
                     `rgba(255, 255, 255, ${opacity})`,
@@ -141,14 +141,14 @@ export default function AboutItem({navigation, route}) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <View>
         <AppStatusBar
           hidden={true}
           backgroundColor="white"
           barStyle="dark-content"
         />
-        <View style={{backgroundColor: 'white'}}>
+        <View style={{ backgroundColor: 'white' }}>
           <View
             style={{
               justifyContent: 'center',
@@ -157,8 +157,8 @@ export default function AboutItem({navigation, route}) {
               backgroundColor: 'white',
             }}>
             <ImageBackground
-              source={item.image}
-              style={{height: '100%', width: '100%', marginTop: 1}}>
+              source={{ uri: item.productImage }}
+              style={{ height: '100%', width: '100%', marginTop: 1 }}>
               <View style={style.crossBackBtn}>
                 <Ionicons
                   name="close"
@@ -180,10 +180,11 @@ export default function AboutItem({navigation, route}) {
               paddingBottom: 6,
             }}>
             <View>
-              <Text style={style.itemName}>{item.name}</Text>
-              <Text style={style.itemCompany}>{item.ingredients}</Text>
+              <Text style={style.itemName}>{item.productName}</Text>
+              <Text style={style.itemCompany}>{item.productCategory}</Text>
             </View>
-            <Text style={style.itemPrice}>{`Min Rs. ${item.price}`}</Text>
+            <Text style={style.itemPrice}>{`Min Rs. ${minPrice}`}</Text>
+            
           </View>
           <View>
             <View
@@ -198,7 +199,7 @@ export default function AboutItem({navigation, route}) {
       </View>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{paddingBottom: 10}}>
+        style={{ paddingBottom: 10 }}>
         <View>
           <ChartSection />
         </View>
@@ -233,12 +234,13 @@ export default function AboutItem({navigation, route}) {
             <Text>In Different Platform:</Text>
           </View>
           <View>
-            {foods.map((item, index) => {
+            {item.productCompany?.map((companyData, index) => {
+
               return (
                 <View key={index} style={style.cartCard}>
                   <Image
-                    source={item.image}
-                    style={{height: 50, width: 50, borderRadius: 60 / 2}}
+                    source={{ uri: item.productImage }}
+                    style={{ height: 50, width: 50, borderRadius: 60 / 2 }}
                   />
                   <View
                     style={{
@@ -251,15 +253,15 @@ export default function AboutItem({navigation, route}) {
                       justifyContent: 'space-between',
                     }}>
                     <View>
-                      <Text style={{fontWeight: 'bold', fontSize: 14}}>
-                        {item.name}
+                      <Text style={{ fontWeight: 'bold', fontSize: 14 }}>
+                        {companyData.companyName}
                       </Text>
-                      <Text style={{fontSize: 12, color: 'grey'}}>
-                        {item.ingredients}
+                      <Text style={{ fontSize: 14, color: 'grey' }}>
+                        {` Stock: ${companyData.companyProductStock}`}
                       </Text>
                     </View>
-                    <Text style={{fontSize: 15, fontWeight: 'bold'}}>
-                      Rs.{item.price}
+                    <Text style={{ fontSize: 15, fontWeight: 'bold' }}>
+                      Rs.{companyData.companyPrice}
                     </Text>
                   </View>
                   <View
@@ -315,7 +317,7 @@ const style = StyleSheet.create({
     alignItems: 'center',
   },
 
-  title: {color: 'white', fontWeight: 'bold', fontSize: 18},
+  title: { color: 'white', fontWeight: 'bold', fontSize: 18 },
   btnContainer: {
     backgroundColor: 'green',
     height: 60,
@@ -325,6 +327,7 @@ const style = StyleSheet.create({
   },
 
   itemName: {
+    maxWidth: '80%',
     fontSize: 18,
     fontWeight: 'bold',
     color: 'black',

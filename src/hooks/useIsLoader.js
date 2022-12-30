@@ -1,10 +1,10 @@
 import React, {useState } from 'react'
-import FullPageLoader from '../components/page-loader'
+import Loader from '../components/Loader/loader'
 
 const useIsLoading = () =>{
     const [isLoading , setIsLoading] = useState(false)
     return [
-        isLoading ? <FullPageLoader/> : null, 
+        isLoading ? <Loader/> : null, 
         () => setIsLoading(true), // show Loader
         () => setIsLoading(false), // hide Loader
         

@@ -1,16 +1,37 @@
-import React from 'react';
+import React , {useEffect , useState} from 'react';
 import {
   SafeAreaView,
   StyleSheet,
   View,
   Text,
   Image,
+  BackHandler,
   TouchableOpacity,
 } from 'react-native';
+import { useSelector } from 'react-redux';
 import {FlatList} from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function Cart({navigation}) {
+
+  const backAction = () => {
+    navigation.goBack();
+    return true
+  };
+
+  const myData = useSelector(state => state.productInfo)
+  console.log(myData)
+
+  
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
+
   const CartCard = ({item}) => {
     return (
       <View style={style.cartCard}>

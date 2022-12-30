@@ -5,11 +5,15 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 // import notificationsReducer from '../features/notifications/notificationsSlice'
 import {userAuthenticationAPI} from './services/userAuthentication';
 import userInfoReducer from './features/api/userReducerSlice';
+import productInfoReducer from './features/api/productReducerSlice';
+
 
 export const store = configureStore({
   reducer: {
     [userAuthenticationAPI.reducerPath]: userAuthenticationAPI.reducer,
     userInfo: userInfoReducer,
+    productInfo: productInfoReducer
+
   },
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware().concat(userAuthenticationAPI.middleware),

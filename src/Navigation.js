@@ -6,7 +6,7 @@ import Register from './screen/Auth/Register';
 import DashBoard from './screen/DashBoard';
 import AboutItem from './screen/AboutItem';
 import SplashScreen from './screen/SplashScreen';
-import ChangePassword from './screen/ChangePassword';
+import Landing from './screen/Landing';
 import ListScan from './screen/ListScan';
 import ScanList from './screen/ScanList';
 import ScanImage from './screen/ScanImage';
@@ -28,14 +28,14 @@ export default function RootNavigation() {
 
   return (
     <>
-      <Stack.Navigator initialRouteName="Login" screenOptions={screenOption}>
+      <Stack.Navigator initialRouteName="SplashScreen" screenOptions={screenOption}>
         <Stack.Screen name="SideDrawer" component={SideDrawer} />
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="SplashScreen" component={SplashScreen} />
         <Stack.Screen name="Register" component={Register} />
         <Stack.Screen
-        name="ChangePassword"
-        component={ChangePassword}
+        name="Landing"
+        component={Landing}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (

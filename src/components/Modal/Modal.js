@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from 'react-native';
-import {Formik, Form, Field, ErrorMessage} from 'formik';
+import React, { useState } from 'react';
+import { Alert, Modal, StyleSheet, Text, Pressable, View } from 'react-native';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {TextInput, Button} from 'react-native-paper';
-import {loginValidationSchema} from '../../Schema/index';
+import { TextInput, Button } from 'react-native-paper';
+import { loginValidationSchema } from '../../Schema/index';
 import AppStatusBar from '../AppStatusBar';
 
 const initialValues = {
@@ -28,13 +28,10 @@ export default function ModalNative(props) {
           props.setModalVisible(false);
         }}>
         <View
-          style={[
-            styles.centeredView,
-            {
-              justifyContent: props.positionHorizontal,
-              alignItems: props.positionVertical,
-            },
-          ]}>
+          style={
+            styles.centeredView
+
+          }>
           {props.children}
         </View>
       </Modal>
@@ -47,4 +44,5 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#00000099',
   },
+ 
 });

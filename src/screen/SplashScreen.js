@@ -1,44 +1,61 @@
-import {StyleSheet, Text, View} from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Image } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import React from 'react';
-import {useEffect} from 'react';
+import { useEffect } from 'react';
 import TopSearchBar from '../components/TopSearchBar';
+import AppStatusBar from '../components/AppStatusBar'
+import { useNavigation } from '@react-navigation/native';
+import { getToken } from '../services/authorizationToken';
 
 export default function SplashScreen() {
+  const navigation = useNavigation();
+
+
   performTimeConsumingTask = async () => {
-    return new Promise(resolve =>
-      setTimeout(() => {
-        resolve('result');
-      }, 3000),
-    );
+
   };
 
   useEffect(() => {
     getUserDetails();
   }, []);
+
+
   getUserDetails = async () => {
-    console.log('user Login');
+    let screen;
+    const token = await getToken();
+    if (token) {
+      screen = 'SideDrawer';
+    } else {
+      screen = 'Login';
+    }
+    console.log(token)
+    setTimeout(() => {
+      navigation.navigate(screen)
+    }, 3000);
   };
   return (
-    // <View>
-      <TopSearchBar />
-    // </View>
-    // <LinearGradient
-    //   start={{x: 0, y: 0}}
-    //   end={{x: 1, y: 1}}
-    //   colors={['white', 'white', 'white']}
-    //   style={styles.linearGradient}>
-    //   <Text>Sign in with Facebook</Text>
-    // </LinearGradient>
+    <SafeAreaView style={{ flex: 1, backgroundColor: 'white' }}>
+      <AppStatusBar backgroundColor='white' barStyle="dark-content" hidden={true} />
+      <View style={{
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // alignSelf: 'center'
+      }}>
+        <Image
+          style={styles.headerImage}
+          source={require('../assets/images/logo.png')}
+        />
+      </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5,
-    backgroundColor: '#f1229f',
+  headerImage: {
+    width: '70%',
+    height: 190,
+    borderRadius: 10,
+    alignSelf: 'center',
   },
 });

@@ -12,18 +12,19 @@ import {
   DrawerItemList,
 } from '@react-navigation/drawer';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
+import { removeToken } from '../../services/authorizationToken';
 
-export default function CustomDrawer({...props}) {
+export default function CustomDrawer({ ...props }) {
   const navigation = useNavigation();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await removeToken('token')
     navigation.navigate('Login');
-    console.log('Logout');
   };
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <DrawerContentScrollView
         {...props}
         contentContainerStyle={
@@ -57,16 +58,16 @@ export default function CustomDrawer({...props}) {
                   borderRadius: 50,
                   //   borderWidth: 1,
                 }}></View>
-              <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
                 {`Hafiz Hamza`}
               </Text>
-              <Text style={{fontSize: 16}}>hamza@gmail.com</Text>
+              <Text style={{ fontSize: 16 }}>hamza@gmail.com</Text>
             </View>
           </View>
           <View style={{}}></View>
         </View>
 
-        <View style={{backgroundColor: 'white', paddingTop: 10}}>
+        <View style={{ backgroundColor: 'white', paddingTop: 10 }}>
           <DrawerItemList {...props} />
         </View>
 
@@ -75,7 +76,7 @@ export default function CustomDrawer({...props}) {
           Style={{
             backgroundColor: 'white',
           }}
-          icon={({color, size}) => (
+          icon={({ color, size }) => (
             <Ionicons color={color} size={15} name={`ios-home`} />
           )}
           onPress={() => navigation.navigate('carousel')}
@@ -85,17 +86,17 @@ export default function CustomDrawer({...props}) {
           Style={{
             backgroundColor: 'white',
           }}
-          icon={({color, size}) => (
+          icon={({ color, size }) => (
             <Ionicons color={color} size={15} name={`ios-home`} />
           )}
-          onPress={() => navigation.navigate('ChangePassword')}
+          onPress={() => navigation.navigate('Landing')}
         />
         <DrawerItem
           label="Splash Screen"
           Style={{
             backgroundColor: 'white',
           }}
-          icon={({color, size}) => (
+          icon={({ color, size }) => (
             <Ionicons color={color} size={15} name={`ios-home`} />
           )}
           onPress={() => navigation.navigate('SplashScreen')}
@@ -110,7 +111,7 @@ export default function CustomDrawer({...props}) {
         }}>
         <View>
           <TouchableOpacity onPress={handleLogout}>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{ flexDirection: 'row' }}>
               <Ionicons name="exit-outline" size={22} />
               <Text
                 style={{

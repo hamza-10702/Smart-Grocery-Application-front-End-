@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,19 +9,20 @@ import {
   PermissionsAndroid,
   SafeAreaView,
   Image,
+  BackHandler,
   ScrollView,
 } from 'react-native';
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 import ModalNative from '../components/Modal/Modal';
-const {width, height} = Dimensions.get('screen');
+const { width, height } = Dimensions.get('screen');
 import AppStatusBar from '../components/AppStatusBar';
 import CustomInput from './CustomInput';
 import useIsLoading from '../hooks/useIsLoader';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import {useScanListMutation} from '../services/userAuthentication';
-import {set} from 'immer/dist/internal';
+import { useScanListMutation } from '../services/userAuthentication';
+import { set } from 'immer/dist/internal';
 
-export default function ScanImage({navigation, route}) {
+export default function ScanImage({ navigation, route }) {
   const imgData = new FormData();
   const checkCameraOrGellary = route.params;
   const [filePath, setFilePath] = useState({});
@@ -39,6 +40,18 @@ export default function ScanImage({navigation, route}) {
       name: image.fileName,
     });
 
+
+
+
+    //for testing purpose
+    showLoader();
+    setImageResponse(["AAta", "Daal", "Rice", "Noodles", "Potato"]);
+    hideLoader();
+    
+      //original 
+
+
+
     // const config = {
     //   method: 'POST',
     //   headers: {
@@ -52,19 +65,25 @@ export default function ScanImage({navigation, route}) {
     //   .then(response => response.text())
     //   .then(result => console.log(result))
     //   .catch(error => console.log('error', error));
-    try {
-      showLoader();
-      const response = await sendImage(imgData);
-      if (response.data.Status === 'Success') {
-        console.log(response.data.Message);
-        setImageResponse(response.data.Message);
-      } else {
-        console.log(response.data.Message);
-      }
-      hideLoader();
-    } catch (error) {
-      console.log(error.message);
-    }
+
+
+
+
+
+
+    // try {
+    //   showLoader();
+    //   const response = await sendImage(imgData);
+    //   if (response.data.Status === 'Success') {
+    //     console.log(response.data.Message);
+    //     setImageResponse(response.data.Message);
+    //   } else {
+    //     console.log(response.data.Message);
+    //   }
+    //   hideLoader();
+    // } catch (error) {
+    //   console.log(error.message);
+    // }
   };
 
   const checkParamsValue = () => {
@@ -77,8 +96,20 @@ export default function ScanImage({navigation, route}) {
       chooseFile('photo');
     }
   };
+
+  const backAction = () => {
+    navigation.goBack();
+    return true
+  };
+
   useEffect(() => {
     checkParamsValue();
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+
+    return () => backHandler.remove();
   }, []);
 
   const submit = () => {
@@ -131,7 +162,7 @@ export default function ScanImage({navigation, route}) {
       maxHeight: 700,
       quality: 1,
       durationLimit: 30,
-      // saveToPhotos: true,
+      saveToPhotos: true,
     };
     let isCameraPermitted = await requestCameraPermission();
     let isStoragePermitted = await requestExternalWritePermission();
@@ -199,7 +230,7 @@ export default function ScanImage({navigation, route}) {
       {loader ? (
         loader
       ) : (
-        <SafeAreaView style={{flex: 1, backgroundColor: '#c0d3d3'}}>
+        <SafeAreaView style={{ flex: 1 }}>
           <AppStatusBar
             backgroundColor="black"
             barStyle="dark-content"
@@ -207,36 +238,36 @@ export default function ScanImage({navigation, route}) {
           />
           <View style={styles.header}>
             <Icon name="arrow-back-ios" size={28} onPress={navigation.goBack} />
-            <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
               Search Products
             </Text>
           </View>
           <View style={styles.container}>
-            <View
-              style={{
-                width: width,
-                height: 200,
-                backgroundColor: 'black',
-                aspectRatio: 1 * 1.4,
-              }}>
-              <Image
-                source={{uri: filePath.uri}}
-                // source={require('../assets/images/scan.jpg')}
+            <View style = {{
+              backgroundColor: 'red'
+            }}>
+              <View
                 style={{
-                  resizeMode: 'contain',
-                  width: '100%',
-                  height: '100%',
-                }}
-              />
+                  width: width,
+                  // height: 200,
+                  backgroundColor: 'black',
+                  aspectRatio: 1 * 1.4,
+                }}>
+                <Image
+                  source={{ uri: filePath.uri }}
+                  style={{
+                    resizeMode: 'contain',
+                    width: '100%',
+                    height: '100%',
+                  }}
+                />
+              </View>
             </View>
-
             <ScrollView
               showsVerticalScrollIndicator={false}
               style={{
                 backgroundColor: 'white',
-                height: '50%',
-                borderTopLeftRadius: 50,
-                borderTopRightRadius: 50,
+                // height: '20%',
               }}>
               <CustomInput imageResponse={imageResponse} />
             </ScrollView>

@@ -10,13 +10,16 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.17.11",
     "@react-navigation/drawer": "^6.5.0",
     "@react-navigation/native": "^6.0.11",
     "@react-navigation/native-stack": "^6.7.0",
     "@reduxjs/toolkit": "^1.8.6",
     "@rneui/base": "github:react-native-elements/react-native-elements#base",
     "@rneui/themed": "github:react-native-elements/react-native-elements#themed",
+    "axios": "^1.2.1",
     "formik": "^2.2.9",
+    "lottie-react-native": "^5.1.4",
     "react": "18.0.0",
     "react-native": "0.69.3",
     "react-native-chart-kit": "^6.12.0",
