@@ -18,14 +18,23 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
 const { width } = Dimensions.get('screen');
 import { LineChart, BarChart } from 'react-native-chart-kit';
+import { setCartInformation } from '../features/api/cartReducerSlice'
+import { storeOrder, removeOrder, getAllOrder } from '../services/orderLocalStore'
+import { useDispatch, useSelector } from 'react-redux';
 const cardWidth = width - 20;
 
 export default function AboutItem({ navigation, route }) {
   const item = route.params;
+  const dispatch = useDispatch();
 
-  const [minPrice , seMinPrice] = useState(0)
 
-  const getLowestPrice = ()=>{
+  const [minPrice, seMinPrice] = useState(0)
+  const [checkDisabled, setCheckDisabled] = useState(false)
+
+
+
+
+  const getLowestPrice = () => {
     let temp;
     item.productCompany.map((data, index) => {
       temp = item.productCompany[0].companyPrice
@@ -35,10 +44,28 @@ export default function AboutItem({ navigation, route }) {
     })
 
     seMinPrice(temp)
+    checkDisabledFun()
+
   }
 
+  const checkDisabledFun = async () => {
+    // removeOrder()
+    const checkOrder = await getAllOrder()
+    if (checkOrder !== null) {
+      console.log(checkOrder)
+      checkOrder.map((orderData) => {
+        if (orderData.productId === item._id) {
+          setCheckDisabled(true)
+        }
+      })
 
 
+    } else {
+      console.log(checkOrder)
+    }
+
+
+  }
 
   const backAction = () => {
     navigation.goBack();
@@ -184,7 +211,7 @@ export default function AboutItem({ navigation, route }) {
               <Text style={style.itemCompany}>{item.productCategory}</Text>
             </View>
             <Text style={style.itemPrice}>{`Min Rs. ${minPrice}`}</Text>
-            
+
           </View>
           <View>
             <View
@@ -286,9 +313,14 @@ export default function AboutItem({ navigation, route }) {
                 borderRadius: 30,
                 width: '50%'
               }}
+              disabled={checkDisabled}
               mode="contained"
               onPress={() => {
-                console.log('CART');
+
+
+                storeOrder(item)
+
+                setCheckDisabled(true)
               }}>
               ADD TO CART
             </Button>

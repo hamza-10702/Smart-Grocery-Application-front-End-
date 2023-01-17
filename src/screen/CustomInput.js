@@ -9,12 +9,19 @@ import {
 } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import { Colors, TextInput, Button } from 'react-native-paper';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useSelector } from 'react-redux';
 const { width } = Dimensions.get('screen');
 const cardWidth = width;
 
 const CustomInput = ({ imageResponse }) => {
+  const navigation = useNavigation();
+
+  const myData = useSelector(state => state.productInfo)
+
+
   const [inputs, setInputs] = useState([]);
   const [searchProducts, setSearchProducts] = useState([]);
 
@@ -27,7 +34,10 @@ const CustomInput = ({ imageResponse }) => {
         value: value,
       });
     });
+
     setInputs(input);
+
+    console.log(input)
   };
 
   const deleteHandler = key => {
@@ -43,16 +53,16 @@ const CustomInput = ({ imageResponse }) => {
   };
 
   const addManually = () => {
-    const input = [];
-    input.push({
+    const manualInput = [...inputs];
+    manualInput.push({
       key: 0,
       value: "",
     });
-    setInputs(input);
+    setInputs(manualInput);
   }
 
   const backAction = () => {
-    navigation.goBack();
+    navigation.navigate('DashBoard');
     return true
   };
 
@@ -155,9 +165,29 @@ const CustomInput = ({ imageResponse }) => {
             }}
             mode="contained"
             onPress={() => {
-              console.log('CART');
+              const data = []
+
+              inputs.map((values)=>{
+                console.log(values.value)
+                data.push(values.value)
+              })
+    
+              let searchProductData = []
+              for(let i = 0; i < data.length; i++){
+                console.log(data.length)
+                 myData.data.filter(item => {
+                 if(item.productName.toLowerCase().indexOf(data[i].toLowerCase()) > -1){
+
+                   searchProductData = [...searchProductData , item]
+                 }
+                })
+              }
+
+              console.log(data)
+              console.log(searchProductData)
+              navigation.navigate('AllSearchProducts', searchProductData)
             }}>
-            ADD TO CART
+            Search Product
           </Button>
         ) : null}
         <View
@@ -185,8 +215,6 @@ const CustomInput = ({ imageResponse }) => {
           >Add Products Manually:</Text>
           <Button
             style={{
-
-
               width: '20%',
               alignSelf: 'center',
               borderWidth: 1,
@@ -197,7 +225,7 @@ const CustomInput = ({ imageResponse }) => {
             mode="Outlined"
             color="#054f4f"
             onPress={() => {
-              console.log('CART');
+              addManually();
             }}>
             ADD
           </Button>

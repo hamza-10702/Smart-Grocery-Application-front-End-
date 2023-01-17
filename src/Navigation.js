@@ -7,7 +7,7 @@ import DashBoard from './screen/DashBoard';
 import AboutItem from './screen/AboutItem';
 import SplashScreen from './screen/SplashScreen';
 import Landing from './screen/Landing';
-import ListScan from './screen/ListScan';
+import AllSearchProducts from './screen/allSearchProducts';
 import ScanList from './screen/ScanList';
 import ScanImage from './screen/ScanImage';
 import ModalNative from './components/Modal/Modal';
@@ -74,8 +74,8 @@ export default function RootNavigation() {
         }}
       />
         <Stack.Screen
-         name="ScanList"
-         component={ScanList}
+         name="AllSearchProducts"
+         component={AllSearchProducts}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (

@@ -1,1 +1,1 @@
-export const baseURl = `https://eager-states-behave-203-81-218-135.loca.lt/`
+export const baseURl = `https://small-cows-thank-202-47-38-148.loca.lt/`

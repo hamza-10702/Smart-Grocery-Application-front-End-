@@ -6,13 +6,15 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 import {userAuthenticationAPI} from './services/userAuthentication';
 import userInfoReducer from './features/api/userReducerSlice';
 import productInfoReducer from './features/api/productReducerSlice';
+import cartInfoReducer from './features/api/cartReducerSlice';
 
 
 export const store = configureStore({
   reducer: {
     [userAuthenticationAPI.reducerPath]: userAuthenticationAPI.reducer,
     userInfo: userInfoReducer,
-    productInfo: productInfoReducer
+    productInfo: productInfoReducer,
+    cartInfo: cartInfoReducer
 
   },
   middleware: getDefaultMiddleware =>

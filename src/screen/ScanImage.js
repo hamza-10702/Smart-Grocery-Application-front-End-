@@ -34,6 +34,8 @@ export default function ScanImage({ navigation, route }) {
   const [loader, showLoader, hideLoader] = useIsLoading();
 
   const uploadProfileImage = async image => {
+    console.log("pohancha 3")
+
     imgData.append('scanImage', {
       uri: image.uri,
       type: image.type,
@@ -44,46 +46,41 @@ export default function ScanImage({ navigation, route }) {
 
 
     //for testing purpose
-    showLoader();
-    setImageResponse(["AAta", "Daal", "Rice", "Noodles", "Potato"]);
-    hideLoader();
+    // showLoader();
+    // setImageResponse(["AAta", "Daal", "Rice", "Noodles", "Potato"]);
+    // hideLoader();
     
       //original 
 
 
 
-    // const config = {
-    //   method: 'POST',
-    //   headers: {
-    //     Accept: 'application/json',
-    //     'Content-Type': 'multipart/form-data',
-    //   },
-    //   body: imgData,
-    // };
+    const config = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'multipart/form-data',
+      },
+      body: imgData,
+    };
 
     // fetch('https://smart-grocery-application.herokuapp.com/scan-image', config)
     //   .then(response => response.text())
     //   .then(result => console.log(result))
     //   .catch(error => console.log('error', error));
 
-
-
-
-
-
-    // try {
-    //   showLoader();
-    //   const response = await sendImage(imgData);
-    //   if (response.data.Status === 'Success') {
-    //     console.log(response.data.Message);
-    //     setImageResponse(response.data.Message);
-    //   } else {
-    //     console.log(response.data.Message);
-    //   }
-    //   hideLoader();
-    // } catch (error) {
-    //   console.log(error.message);
-    // }
+    try {
+      showLoader();
+      const response = await sendImage(imgData);
+      if (response.data.Status === 'Success') {
+        console.log(response.data.Message);
+        setImageResponse(response.data.Message);
+      } else {
+        console.log(response.data.Message);
+      }
+      hideLoader();
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   const checkParamsValue = () => {
@@ -164,6 +161,7 @@ export default function ScanImage({ navigation, route }) {
       durationLimit: 30,
       saveToPhotos: true,
     };
+   
     let isCameraPermitted = await requestCameraPermission();
     let isStoragePermitted = await requestExternalWritePermission();
     if (isCameraPermitted && isStoragePermitted) {
@@ -184,8 +182,10 @@ export default function ScanImage({ navigation, route }) {
         if (response.didCancel) {
           navigation.navigate('DashBoard');
         } else {
+          console.log("pohancha 1")
           setFilePath(response.assets[0]);
           // console.log('fileName -> ', response?.assets[0]);
+          console.log("pohancha 2")
           uploadProfileImage(response.assets[0]);
         }
       });

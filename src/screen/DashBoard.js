@@ -199,8 +199,8 @@ export default function DashBoard({ navigation }) {
             />
           </View>
           <View style={{ marginHorizontal: 10 }}>
-            <Text style={{ fontSize: 14, fontWeight: 'bold' }}>{product.productName}</Text>
-            <Text style={{ fontSize: 12, color: 'grey' }}>
+            <Text numberOfLines={2} style={{ fontSize: 14, fontWeight: 'bold' , textAlign:'center'}}>{product.productName}</Text>
+            <Text style={{ fontSize: 12, color: 'grey', textAlign:'center' }}>
               {product.productCategory}
             </Text>
           </View>
@@ -265,6 +265,7 @@ export default function DashBoard({ navigation }) {
             <TouchableOpacity
               onPress={() => {
                 navigation.navigate('Cart');
+                // navigation.navigate('AllSearchProducts');
               }}>
               <View>
                 <Ionicons name="cart-outline" size={30} color="#054f4f" />
@@ -348,7 +349,6 @@ export default function DashBoard({ navigation }) {
         {loader ? (loader) : (
           <FlatList
             showsVerticalScrollIndicator={false}
-            // data={renderData}
             data={productData}
             renderItem={({ item, index }) => <Card product={item} />}
             key={'_'}
