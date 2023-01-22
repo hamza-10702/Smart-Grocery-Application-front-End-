@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 
 export default function ListScan() {
@@ -16,7 +16,7 @@ export default function ListScan() {
   );
 
   takePicture = async function (camera) {
-    const options = {quality: 0.5, base64: true};
+    const options = { quality: 0.5, base64: true };
     const data = await camera.takePictureAsync(options);
     //  eslint-disable-next-line
     console.log(data.uri);
@@ -24,7 +24,7 @@ export default function ListScan() {
 
   return (
     <View style={styles.container}>
-     {/* 
+      {/* 
         All Search product code
 
 
@@ -71,6 +71,48 @@ export default function ListScan() {
                     </View>
                 </View>
             </Pressable>
+
+
+
+
+
+
+
+
+
+
+
+
+            ///cart flat list
+            <View>
+             <FlatList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 80 }}
+        data={cartredItems}
+        renderItem={({ item }) => <CartCard item={item} />}
+        ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
+        ListFooterComponent={() => (
+          <View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginVertical: 15,
+              }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+                Total Price
+              </Text>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Rs. {totalPrice}</Text>
+            </View>
+            <View style={{ marginHorizontal: 30 }}>
+               <button title="CHECKOUT" /> 
+            </View>
+          </View>
+        )}
+      />
+            
+            
+            </View>
         );
      */}
     </View>

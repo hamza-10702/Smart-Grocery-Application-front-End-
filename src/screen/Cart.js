@@ -10,60 +10,13 @@ import {
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { FlatList } from 'react-native-gesture-handler';
+import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getAllOrder, updateOrder } from '../services/orderLocalStore'
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 let updateQty = []
-export const foods = [
-  {
-    id: '1',
-    name: 'Meat Pizza',
-    ingredients: 'Mixed Pizza',
-    price: '8.30',
-    quantity: 1,
-    image: require('../assets/images/c1.jpg'),
-  },
-  {
-    id: '2',
-    name: 'Cheese Pizza',
-    ingredients: 'Cheese Pizza',
-    price: '7.10',
-    quantity: 4,
-    image: require('../assets/images/c2.jpg'),
-  },
-  {
-    id: '3',
-    name: 'Chicken Burger',
-    ingredients: 'Fried Chicken',
-    price: '5.10',
-    quantity: 2,
-    image: require('../assets/images/c3.jpg'),
-  },
-  {
-    id: '4',
-    name: 'Meat Pizza',
-    ingredients: 'Mixed Pizza',
-    price: '8.30',
-    quantity: 1,
-    image: require('../assets/images/c1.jpg'),
-  },
-  {
-    id: '5',
-    name: 'Cheese Pizza',
-    ingredients: 'Cheese Pizza',
-    price: '7.10',
-    quantity: 1,
-    image: require('../assets/images/c2.jpg'),
-  },
-  {
-    id: '6',
-    name: 'Chicken Burger',
-    ingredients: 'Fried Chicken',
-    price: '5.10',
-    quantity: 1666,
-    image: require('../assets/images/c3.jpg'),
-  },
-];
+
 
 export default function Cart({ navigation }) {
 
@@ -103,9 +56,9 @@ export default function Cart({ navigation }) {
   // console.log(myData)
 
 
- const updateAsync  = ()=>{
-  updateOrder(updateQty)
- }
+  const updateAsync = () => {
+    updateOrder(updateQty)
+  }
 
   useEffect(() => {
     setAllProducts()
@@ -178,37 +131,101 @@ export default function Cart({ navigation }) {
   };
 
 
+  const cartItemRender = () => {
+    return (
+      <SwipeListView
+        data={cartredItems}
+        keyExtractor={(item) => `${item.productId}`}
+        contentContainerStyle={{
+          marginTop: 10,
+          paddingHorizontal: 10,
+          paddingBottom: 10
+        }}
+        disableRightSwipr={true}
+        rightOpenValue={-75}
+        renderItem={(data, rowMap) => {
+          return (
+            <CartCard item={data.item} />
+          )
+        }}
+        renderHiddenItem={() => {
+          return (
+            <View style={{
+              // alignSelf: 'flex-end',
+              // marginLeft: 5,
+              flex: 1,
+              // backgroundColor: 'red',
+              alignItems: 'flex-end',
+              justifyContent: 'center',
+              marginHorizontal: 20,
+
+
+            }}>
+              <TouchableOpacity
+                onPress={() => { }}>
+                <View>
+                  <Icon name="delete-outline" size={35} color="#054f4f" />
+                </View>
+              </TouchableOpacity>
+            </View>
+          )
+        }}
+      />
+    )
+  }
+
   return (
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <View style={style.header}>
         <Icon name="arrow-back-ios" size={28} onPress={navigation.goBack} />
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Cart</Text>
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 80 }}
-        data={cartredItems}
-        renderItem={({ item }) => <CartCard item={item} />}
-        ListFooterComponentStyle={{ paddingHorizontal: 20, marginTop: 20 }}
-        ListFooterComponent={() => (
-          <View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginVertical: 15,
-              }}>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-                Total Price
-              </Text>
-              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Rs. {totalPrice}</Text>
-            </View>
-            <View style={{ marginHorizontal: 30 }}>
-              {/* <button title="CHECKOUT" /> */}
-            </View>
-          </View>
-        )}
-      />
+      {cartItemRender()}
+
+      <View style={{
+        height: 150,
+        backgroundColor: '#f2f2f2',
+        alignItems: 'center',
+        maxWidth: '100%',
+        // justifyContent: 'center'
+
+
+
+      }} >
+
+        <View
+          style={{
+            // maxWidth: '90%',
+            width: '100%',
+            flexDirection: 'row',
+            // backgroundColor: 'red',
+            justifyContent: 'space-around',
+            marginVertical: 15,
+          }}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+            Total Price
+          </Text>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Rs. {totalPrice}</Text>
+        </View>
+        <View style={{ marginHorizontal: 30 }}>
+          <Button
+            style={{
+              backgroundColor: '#054f4f',
+              borderRadius: 30,
+              width: '50%'
+            }}
+
+            mode="contained"
+            onPress={() => {
+
+              console.log("Order Dispatch")
+              navigation.navigate('ProductComparision')
+            }}>
+            ADD TO CART
+          </Button>
+        </View>
+
+      </View>
     </SafeAreaView>
   );
 }
@@ -222,7 +239,7 @@ const style = StyleSheet.create({
   },
   cartCard: {
     height: 80,
-    elevation: 5,
+    elevation: 4,
     borderRadius: 10,
     backgroundColor: 'white',
     marginVertical: 10,

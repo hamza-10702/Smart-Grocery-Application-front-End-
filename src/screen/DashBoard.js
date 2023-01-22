@@ -381,10 +381,10 @@ export default function DashBoard({ navigation }) {
               navigation.navigate('ScanImage', 'gallery');
             }
           }}
-          onPressMain={() => {
-            // setFloatButtonClick(!floatButtonClick);
-            console.log(`Main Button`);
-          }}
+          // onPressMain={() => {
+          //   setFloatButtonClick(!floatButtonClick);
+          //   console.log(`Main Button`);
+          // }}
         />
 
 

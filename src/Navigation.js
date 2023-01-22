@@ -8,6 +8,7 @@ import AboutItem from './screen/AboutItem';
 import SplashScreen from './screen/SplashScreen';
 import Landing from './screen/Landing';
 import AllSearchProducts from './screen/allSearchProducts';
+import ProductComparision from './screen/ProductComparision';
 import ScanList from './screen/ScanList';
 import ScanImage from './screen/ScanImage';
 import ModalNative from './components/Modal/Modal';
@@ -86,6 +87,16 @@ export default function RootNavigation() {
         <Stack.Screen
          name="ScanImage"
          component={ScanImage}
+        options={{
+          headerBackVisible: true,
+          drawerIcon: ({color}) => (
+            <Ionicons name="ios-home" size={15} color={color} />
+          ),
+        }}
+      />
+        <Stack.Screen
+         name="ProductComparision"
+         component={ProductComparision}
         options={{
           headerBackVisible: true,
           drawerIcon: ({color}) => (

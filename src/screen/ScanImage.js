@@ -13,6 +13,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
 import ModalNative from '../components/Modal/Modal';
 const { width, height } = Dimensions.get('screen');
 import AppStatusBar from '../components/AppStatusBar';
@@ -49,19 +50,19 @@ export default function ScanImage({ navigation, route }) {
     // showLoader();
     // setImageResponse(["AAta", "Daal", "Rice", "Noodles", "Potato"]);
     // hideLoader();
-    
-      //original 
+
+    //original 
 
 
 
-    const config = {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'multipart/form-data',
-      },
-      body: imgData,
-    };
+    // const config = {
+    //   method: 'POST',
+    //   headers: {
+    //     Accept: 'application/json',
+    //     'Content-Type': 'multipart/form-data',
+    //   },
+    //   body: imgData,
+    // };
 
     // fetch('https://smart-grocery-application.herokuapp.com/scan-image', config)
     //   .then(response => response.text())
@@ -86,10 +87,11 @@ export default function ScanImage({ navigation, route }) {
   const checkParamsValue = () => {
     console.log(route.params);
     if (checkCameraOrGellary === 'camera') {
-      console.log(checkCameraOrGellary);
+      // console.log(checkCameraOrGellary);
       captureImage('photo');
+      // captureCamera()
     } else if (checkCameraOrGellary === 'gallery') {
-      console.log(checkCameraOrGellary);
+      // console.log(checkCameraOrGellary);
       chooseFile('photo');
     }
   };
@@ -109,9 +111,7 @@ export default function ScanImage({ navigation, route }) {
     return () => backHandler.remove();
   }, []);
 
-  const submit = () => {
-    console.log('Submittt');
-  };
+
 
   const requestCameraPermission = async () => {
     if (Platform.OS === 'android') {
@@ -152,43 +152,66 @@ export default function ScanImage({ navigation, route }) {
     } else return true;
   };
 
-  const captureImage = async type => {
-    let options = {
-      mediaType: type,
-      maxWidth: 700,
-      maxHeight: 700,
-      quality: 1,
-      durationLimit: 30,
-      saveToPhotos: true,
-    };
-   
-    let isCameraPermitted = await requestCameraPermission();
-    let isStoragePermitted = await requestExternalWritePermission();
-    if (isCameraPermitted && isStoragePermitted) {
-      launchCamera(options, response => {
-        if (response.didCancel) {
-          navigation.navigate('DashBoard');
-        } else if (response.errorCode == 'camera_unavailable') {
-          alert('Camera not available on device');
-          navigation.navigate('DashBoard');
-        } else if (response.errorCode == 'permission') {
-          alert('Permission not satisfied');
-          navigation.navigate('DashBoard');
-        } else if (response.errorCode == 'others') {
-          alert(response.errorMessage);
-          navigation.navigate('DashBoard');
-        }
 
-        if (response.didCancel) {
-          navigation.navigate('DashBoard');
-        } else {
-          console.log("pohancha 1")
-          setFilePath(response.assets[0]);
-          // console.log('fileName -> ', response?.assets[0]);
-          console.log("pohancha 2")
-          uploadProfileImage(response.assets[0]);
-        }
-      });
+  // const captureCamera = async () => {
+  //   console.log("Yes")
+  //   let isCameraPermitted = await requestCameraPermission();
+  //   let isStoragePermitted = await requestExternalWritePermission();
+  //   if (isCameraPermitted && isStoragePermitted) {
+  //     ImagePicker.openCamera({
+  //       maxWidth: 700,
+  //       maxHeight: 700,
+  //       cropping: true,
+  //     }).then(image => {
+  //       console.log(image)
+  //     })
+  //   }
+  // }
+
+  const captureImage = async type => {
+    try {
+      let options = {
+        mediaType: type,
+        maxWidth: 700,
+        maxHeight: 700,
+        quality: 1,
+        durationLimit: 30,
+        saveToPhotos: true,
+      };
+
+      let isCameraPermitted = await requestCameraPermission();
+      let isStoragePermitted = await requestExternalWritePermission();
+      if (isCameraPermitted && isStoragePermitted) {
+        launchCamera(options, response => {
+          if (response.didCancel) {
+            navigation.navigate('DashBoard');
+          } else if (response.errorCode == 'camera_unavailable') {
+            alert('Camera not available on device');
+            navigation.navigate('DashBoard');
+          } else if (response.errorCode == 'permission') {
+            alert('Permission not satisfied');
+            navigation.navigate('DashBoard');
+          } else if (response.errorCode == 'others') {
+            alert(response.errorMessage);
+            navigation.navigate('DashBoard');
+          }
+
+          if (response.didCancel) {
+            navigation.navigate('DashBoard');
+          } else {
+            console.log("pohancha 1")
+            // console.log('fileName -> ', response?.assets[0]);
+
+
+
+            setFilePath(response.assets[0]);
+            // console.log("pohancha 2", response.assets[0])
+            uploadProfileImage(response.assets[0]);
+          }
+        });
+      }
+    } catch (error) {
+      console.log("Something went wrong")
     }
   };
 
@@ -219,7 +242,7 @@ export default function ScanImage({ navigation, route }) {
         navigation.navigate('DashBoard');
       } else {
         setFilePath(response.assets[0]);
-        // console.log('fileName -> ', response?.assets[0]);
+        console.log('fileName -> ', response?.assets[0]);
         uploadProfileImage(response.assets[0]);
       }
     });
@@ -243,7 +266,7 @@ export default function ScanImage({ navigation, route }) {
             </Text>
           </View>
           <View style={styles.container}>
-            <View style = {{
+            <View style={{
               backgroundColor: 'red'
             }}>
               <View

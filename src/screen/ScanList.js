@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -7,111 +7,109 @@ import {
   Text,
   Image,
 } from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
+import { FlatList } from 'react-native-gesture-handler';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Camera, useCameraDevices} from 'react-native-vision-camera';
-import {useIsFocused} from '@react-navigation/native';
+import { Camera, useCameraDevices } from 'react-native-vision-camera';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import ImagePicker from 'react-native-image-crop-picker';
+import { Button } from 'react-native-paper';
 
-export default function ScanList({navigation, route}) {
-  const [hasPermission, setHasPermission] = useState(false);
 
-  const isFocused = useIsFocused();
-  const devices = useCameraDevices();
-  const device = devices.back;
-  const camera = useRef(null);
+export default function ScanList({ navigation, route }) {
 
-  useEffect(() => {
-    requesCameraPermission();
+  const [hasPermission, setHasPermission] = React.useState(false);
+  const devices = useCameraDevices()
+  const device = devices.back
+  const camera = useRef(null)
+  const takePhotoOptions = {
+    qualityPrioritization: 'speed',
+    flash: 'off'
+  };
+  React.useEffect(() => {
+    (async () => {
+      const status = await Camera.requestCameraPermission();
+      setHasPermission(status === 'authorized');
+    })();
   }, []);
-
-  const requesCameraPermission = useCallback(async () => {
-    const permission = Camera.requestCameraPermission();
-
-    if (permission === 'denied') {
-      await Linking.openSettings();
+  const takePhoto = async () => {
+    try {
+      if (camera.current == null) throw new Error('Camera Ref is Null');
+      console.log('Photo taking ....');
+      const photo = await camera.current.takePhoto(takePhotoOptions);
+      console.log(photo)
+    } catch (error) {
+      console.log(error);
     }
-  }, []);
+  };
 
-  function RenderCamera() {
-    const onPressButton = async () => {
-      try {
-        if (camera.current == null) throw new Error('Camera Ref is Null');
-        console.log('Photo taking ....');
-        const photo = await camera.current.takePhoto({
-          flash: 'on',
-          // skipMetadata: false,
-          qualityPrioritization: 'speed',
-        });
+  
 
-        console.log(photo);
-        navigation.navigate('ScanImage' , {photoPath: photo.path})
-        console.log(photo.path);
-      } catch (error) {
-        console.log(error);
-      }
-    };
 
+  function renderCamera() {
     if (device == null) {
       return (
-        <View
-          style={{
-            flex: 1,
-          }}></View>
-      );
-    } else {
-      return (
-        <View
-          style={{
-            flex: 1,
-          }}>
-          <Camera
-            style={{flex: 1}}
-            device={device}
-            ref={camera}
-            isActive={isFocused}
-            enableZoomGesture
-            photo={true}
-            torch="off"
-            // torch={device.hasTorch && torch ? 'on' : 'off'}
-          />
-          {/* scan button */}
-          <View
-            style={{
-              position: 'absolute',
-              alignItems: 'center',
-              bottom: 40,
-              left: 0,
-              right: 0,
-            }}>
-            <View
-              style={{
-                height: 60,
-                width: 60,
-                borderRadius: 30,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: 'white',
-              }}>
-              <MaterialIcons
-                name="line-scan"
-                size={40}
-                color="black"
-                onPress={onPressButton}
-              />
-            </View>
-          </View>
+        <View>
+          <Text style={{ color: '#fff' }}>Loading</Text>
         </View>
-      );
+      )
     }
+    else {
+      return (
+        <View style={{ flex: 1 }}>
+          {device != null &&
+            hasPermission && (
+              <>
+                <Camera
+                  ref={camera}
+                  style={StyleSheet.absoluteFill}
+                  device={device}
+                  isActive={true}
+                  photo={true}
+                />
+                  <Text> Too much code, I delete something here </Text>
+              </>
+            )}
+        </View>
+      )
+    }
+
+
   }
 
+  const captureCamera = async () => {
+    console.log("Yes")
+
+    ImagePicker.openCamera({
+      maxWidth: 700,
+      maxHeight: 700,
+      cropping: true,
+    }).then(image => {
+      console.log(image)
+    })
+
+  }
   return (
     <SafeAreaView
       style={{
         flex: 1,
       }}>
-      <RenderCamera />
+
+      {
+          renderCamera()
+        }
+      <Button
+        style={{
+          // backgroundColor: '#054f4f',
+          borderRadius: 30,
+          width: '50%'
+        }}
+
+        onPress={() => {
+          takePhoto()
+         
+        }}>
+        camera check
+      </Button>
     </SafeAreaView>
   );
 }
