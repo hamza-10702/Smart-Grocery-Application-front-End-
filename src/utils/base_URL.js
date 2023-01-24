@@ -1,4 +1,4 @@
-export const baseURl = `https://busy-points-hug-103-24-98-180.loca.lt/`
+export const baseURl = `https://good-papers-flash-103-24-98-180.loca.lt/`
 
 
 

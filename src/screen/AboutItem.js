@@ -260,11 +260,11 @@ export default function AboutItem({ navigation, route }) {
             </Text>
             <Text>In Different Platform:</Text>
           </View>
-          <View>
+          <View >
             {item.productCompany?.map((companyData, index) => {
 
               return (
-                <View key={index} style={style.cartCard}>
+                <View key={index} style={[style.cartCard , {backgroundColor : companyData.companyPrice === minPrice ? '#cce6cc' : 'white'}]}>
                   <Image
                     source={{ uri: item.productImage }}
                     style={{ height: 50, width: 50, borderRadius: 60 / 2 }}
@@ -389,7 +389,7 @@ const style = StyleSheet.create({
     height: 80,
     elevation: 2,
     borderRadius: 10,
-    backgroundColor: 'white',
+    // backgroundColor: 'white',
     marginVertical: 5,
     marginHorizontal: 10,
     paddingHorizontal: 10,

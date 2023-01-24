@@ -14,6 +14,7 @@ import { Button } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { getAllOrder, updateOrder } from '../services/orderLocalStore'
 import { SwipeListView } from 'react-native-swipe-list-view';
+import useIsLoading from '../hooks/useIsLoader';
 
 let updateQty = []
 
@@ -21,6 +22,7 @@ let updateQty = []
 export default function Cart({ navigation }) {
 
 
+  const [loader, showLoader, hideLoader] = useIsLoading()
   const [cartredItems, setCartedItem] = useState(null)
   const [totalPrice, setTotalPrice] = useState(0)
 
@@ -31,9 +33,11 @@ export default function Cart({ navigation }) {
 
 
   const setAllProducts = async () => {
+    showLoader()
     let cartItems = await getAllOrder()
     setCartedItem(cartItems)
     calculateTotal(cartItems)
+    hideLoader()
   }
 
   const updateProductQuantity = (newQty, id) => {
@@ -52,13 +56,16 @@ export default function Cart({ navigation }) {
     setTotalPrice(amount)
   }
 
-  // const myData = useSelector(state => state.productInfo)
-  // console.log(myData)
+
 
 
   const updateAsync = () => {
-    updateOrder(updateQty)
+    updateOrder(cartredItems)
   }
+
+  useEffect(() => {
+    updateAsync()
+  }, [cartredItems])
 
   useEffect(() => {
     setAllProducts()
@@ -133,100 +140,122 @@ export default function Cart({ navigation }) {
 
   const cartItemRender = () => {
     return (
-      <SwipeListView
-        data={cartredItems}
-        keyExtractor={(item) => `${item.productId}`}
-        contentContainerStyle={{
-          marginTop: 10,
-          paddingHorizontal: 10,
-          paddingBottom: 10
-        }}
-        disableRightSwipr={true}
-        rightOpenValue={-75}
-        renderItem={(data, rowMap) => {
-          return (
-            <CartCard item={data.item} />
-          )
-        }}
-        renderHiddenItem={() => {
-          return (
-            <View style={{
-              // alignSelf: 'flex-end',
-              // marginLeft: 5,
-              flex: 1,
-              // backgroundColor: 'red',
-              alignItems: 'flex-end',
-              justifyContent: 'center',
-              marginHorizontal: 20,
+      <>
+        {cartredItems?.length > 0 ? (
+          <SwipeListView
+            data={cartredItems}
+            keyExtractor={(item) => `${item.productId}`}
+            contentContainerStyle={{
+              marginTop: 10,
+              paddingHorizontal: 10,
+              paddingBottom: 10
+            }}
+            disableRightSwipr={true}
+            rightOpenValue={-75}
+            renderItem={(data, rowMap) => {
+              return (
+                <CartCard item={data.item} />
+              )
+            }}
+            renderHiddenItem={(data, rowMap) => {
+              return (
+                <View style={{
+                  // alignSelf: 'flex-end',
+                  // marginLeft: 5,
+                  flex: 1,
+                  // backgroundColor: 'red',
+                  alignItems: 'flex-end',
+                  justifyContent: 'center',
+                  marginHorizontal: 20,
 
 
-            }}>
-              <TouchableOpacity
-                onPress={() => { }}>
-                <View>
-                  <Icon name="delete-outline" size={35} color="#054f4f" />
+                }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      let removeItem = [];
+                      removeItem = cartredItems.filter(item => item.productId !== data.item.productId)
+                      setCartedItem(removeItem)
+                    }}>
+                    <View>
+                      <Icon name="delete-outline" size={35} color="#054f4f" />
+                    </View>
+                  </TouchableOpacity>
                 </View>
-              </TouchableOpacity>
-            </View>
-          )
-        }}
-      />
+              )
+            }}
+          />
+        ) : (
+          null
+        )}
+      </>
+
     )
   }
 
   return (
+
+
+
+
+
     <SafeAreaView style={{ backgroundColor: 'white', flex: 1 }}>
       <View style={style.header}>
         <Icon name="arrow-back-ios" size={28} onPress={navigation.goBack} />
         <Text style={{ fontSize: 20, fontWeight: 'bold' }}>Cart</Text>
       </View>
-      {cartItemRender()}
-
-      <View style={{
-        height: 150,
-        backgroundColor: '#f2f2f2',
-        alignItems: 'center',
-        maxWidth: '100%',
-        // justifyContent: 'center'
 
 
+      {loader ? (loader) : (
+        <View>
 
-      }} >
+          {cartItemRender()}
+          <View style={{
+            height: 150,
+            backgroundColor: '#f2f2f2',
+            alignItems: 'center',
+            maxWidth: '100%',
+            // justifyContent: 'center'
 
-        <View
-          style={{
-            // maxWidth: '90%',
-            width: '100%',
-            flexDirection: 'row',
-            // backgroundColor: 'red',
-            justifyContent: 'space-around',
-            marginVertical: 15,
-          }}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-            Total Price
-          </Text>
-          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Rs. {totalPrice}</Text>
+
+
+          }} >
+
+            <View
+              style={{
+                // maxWidth: '90%',
+                width: '100%',
+                flexDirection: 'row',
+                // backgroundColor: 'red',
+                justifyContent: 'space-around',
+                marginVertical: 15,
+              }}>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
+                Total Price
+              </Text>
+              <Text style={{ fontSize: 18, fontWeight: 'bold' }}>Rs. {totalPrice}</Text>
+            </View>
+            <View style={{ marginHorizontal: 30 }}>
+              <Button
+                style={{
+                  backgroundColor: '#054f4f',
+                  borderRadius: 30,
+                  width: '80%'
+                }}
+
+                mode="contained"
+                onPress={() => {
+                  navigation.navigate('ProductComparision')
+                }}>
+                PRODUCT COMPARISION
+              </Button>
+            </View>
+
+          </View>
         </View>
-        <View style={{ marginHorizontal: 30 }}>
-          <Button
-            style={{
-              backgroundColor: '#054f4f',
-              borderRadius: 30,
-              width: '50%'
-            }}
-
-            mode="contained"
-            onPress={() => {
-
-              console.log("Order Dispatch")
-              navigation.navigate('ProductComparision')
-            }}>
-            ADD TO CART
-          </Button>
-        </View>
-
-      </View>
+      )}
     </SafeAreaView>
+
+
   );
 }
 

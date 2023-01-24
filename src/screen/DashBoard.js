@@ -29,13 +29,10 @@ import { useScanListMutation } from '../services/userAuthentication';
 import { useAllProductQuery } from '../services/userAuthentication';
 const cardWidth = width / 3 - 20;
 const searchInputWidth = width / 1.4;
-import { foods } from '../utils/food';
+import { localProducts } from '../utils/food';
 import { useDispatch, useSelector } from 'react-redux'
 import { setProductInformation } from '../features/api/productReducerSlice'
-import { categories } from '../utils/categories';
-import Loader from '../components/Loader/loader'
 import useIsLoading from '../hooks/useIsLoader';
-import { interpolate } from 'react-native-reanimated';
 import axios from 'axios';
 import { baseURl } from '../utils/base_URL';
 
@@ -50,20 +47,28 @@ export default function DashBoard({ navigation }) {
 
   const dispatch = useDispatch()
 
-  // const { data, error, isLoading, isSuccess } = useAllProductQuery();
+  
 
 
   const getData = async () => {
     try {
       showLoader()
-      const response = await axios.get(`${baseURl}product`)
-      if (response) {
+      // const response = await axios.get(`${baseURl}product`)
+      // if (response) {
         // console.log(response.data)
-        dispatch(setProductInformation({ data: response.data }))
-        setProductData(response.data)
+
+
+        // local product for testing
+        dispatch(setProductInformation({ data: localProducts }))
+        setProductData(localProducts)
+
+        //actual code
+        // dispatch(setProductInformation({ data: response.data }))
+        // setProductData(response.data)
+
         let categories = []
         let duplicate = []
-        response.data?.map((category) => {
+        localProducts?.map((category) => {
           if (!duplicate.includes(category.productCategory)) {
             duplicate.push(category.productCategory);
             categories.push({ category: category.productCategory, image: category.productImage });
@@ -71,7 +76,7 @@ export default function DashBoard({ navigation }) {
           }
         })
         setProductCategories(categories)
-      }
+      // }
       hideLoader()
     } catch (error) {
       console.log(error)
