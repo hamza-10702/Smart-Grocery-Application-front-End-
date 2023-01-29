@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   Text,
@@ -11,17 +11,49 @@ import {
   DrawerItem,
   DrawerItemList,
 } from '@react-navigation/drawer';
+import Icon from 'react-native-vector-icons/MaterialIcons';
+import { useDispatch, useSelector } from 'react-redux'
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
-import { removeToken } from '../../services/authorizationToken';
+import { removeToken, removeUser, getUser } from '../../services/authorizationToken';
+import { removeOrder } from '../../services/orderLocalStore';
 
 export default function CustomDrawer({ ...props }) {
   const navigation = useNavigation();
 
+  const userInfo = useSelector(state => state.userInfo)
+ 
+
+  const [userName, setUserName] = useState('')
+
+
+
   const handleLogout = async () => {
     await removeToken('token')
+    await removeUser()
+    removeOrder()
     navigation.navigate('Login');
   };
+
+
+  const getName = ()=>{
+   
+    if(userInfo.name){
+
+      let matches = userInfo.name.match(/\b(\w)/g); // ['J','S','O','N']
+      let firstLatters = matches.join(''); // JSON
+      firstLatters = firstLatters.toUpperCase()
+      setUserName(firstLatters)
+    }
+  }
+
+  useEffect(() => {
+    
+  }, [userName])
+
+  useEffect(()=>{
+    getName()
+  })
 
   return (
     <View style={{ flex: 1 }}>
@@ -52,16 +84,24 @@ export default function CustomDrawer({ ...props }) {
             <View>
               <View
                 style={{
+                  backgroundColor: 'red',
                   height: 100,
                   width: 100,
                   backgroundColor: 'cyan',
                   borderRadius: 50,
                   //   borderWidth: 1,
-                }}></View>
+                }}><Text style={{
+                  marginLeft: 20,
+                  marginTop: 20,
+                  fontSize: 40,
+                  fontWeight: 'bold'
+                }}>
+                  {userName}
+                </Text></View>
               <Text style={{ fontSize: 18, fontWeight: 'bold' }}>
-                {`Hafiz Hamza`}
+                {userInfo.name}
               </Text>
-              <Text style={{ fontSize: 16 }}>hamza@gmail.com</Text>
+              <Text numberOfLines={2} style={{ fontSize: 16, width: '80%' }}>{userInfo.email}</Text>
             </View>
           </View>
           <View style={{}}></View>
@@ -72,16 +112,16 @@ export default function CustomDrawer({ ...props }) {
         </View>
 
         <DrawerItem
-          label="slide"
+          label="My Cart"
           Style={{
             backgroundColor: 'white',
           }}
           icon={({ color, size }) => (
-            <Ionicons color={color} size={15} name={`ios-home`} />
+            <Ionicons color={color} size={18} name="ios-cart" />
           )}
-          onPress={() => navigation.navigate('carousel')}
+          onPress={() => navigation.navigate('Cart')}
         />
-        <DrawerItem
+        {/* <DrawerItem
           label="Change Password"
           Style={{
             backgroundColor: 'white',
@@ -90,17 +130,7 @@ export default function CustomDrawer({ ...props }) {
             <Ionicons color={color} size={15} name={`ios-home`} />
           )}
           onPress={() => navigation.navigate('Landing')}
-        />
-        <DrawerItem
-          label="Splash Screen"
-          Style={{
-            backgroundColor: 'white',
-          }}
-          icon={({ color, size }) => (
-            <Ionicons color={color} size={15} name={`ios-home`} />
-          )}
-          onPress={() => navigation.navigate('SplashScreen')}
-        />
+        /> */}
       </DrawerContentScrollView>
       <View
         style={{

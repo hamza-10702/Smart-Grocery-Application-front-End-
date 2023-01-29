@@ -41,7 +41,7 @@ export const userAuthenticationAPI = createApi({
     loggedInUser: builder.query({
       query: token => {
         return {
-          url: 'yahan url aaega',
+          url: '/logedin-user',
           method: 'GET',
           headers: {
             authorization: `Bearer ${token}`,

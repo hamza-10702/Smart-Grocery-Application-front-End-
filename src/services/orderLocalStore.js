@@ -75,7 +75,6 @@ const getAllLeastProduct = (allCartedProducts) => {
                 productName: allCartedProducts[i].productName,
                 productImage: allCartedProducts[i].productImage,
                 productQuantity: 1,
-                productCompanyId: product._id,
                 productCompanyName: product.companyName,
                 productCompanyStock: product.companyProductStock,
                 productCompanyPrice: product.companyPrice

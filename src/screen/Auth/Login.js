@@ -7,7 +7,7 @@ import {
   KeyboardAvoidingView,
   TouchableOpacity,
 } from 'react-native';
-import React, { useState , useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Dimensions } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { TextInput, Button } from 'react-native-paper';
@@ -15,13 +15,15 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { loginValidationSchema } from '../../Schema/index';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { useDispatch, useSelector } from 'react-redux'
 import Header from '../../components/login/Header';
 import ModalNative from '../../components/Modal/Modal';
-import Toaster, { toastConfig } from '../../components/Toaster/Toaster';
+import { toastConfig } from '../../utils/ToastConfig';
 import AppStatusBar from '../../components/AppStatusBar';
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
-import { storeToken } from '../../services/authorizationToken'
+import { storeToken  , storeUser} from '../../services/authorizationToken'
 import { useLoginMutation } from '../../services/userAuthentication';
+import {setUserInformation} from '../../features/api/userReducerSlice'
 
 
 const initialValues = {
@@ -31,6 +33,8 @@ const initialValues = {
 
 export default function Login() {
   const navigation = useNavigation();
+
+  const dispatch = useDispatch()
 
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -61,47 +65,49 @@ export default function Login() {
   };
 
   const [loginUser] = useLoginMutation()
-
   const handleSubmit = async values => {
-    storeToken('hfuefhfdfewh33434bcadscbh3r3rbber33bscbcc')
-    navigation.navigate('SideDrawer')
-    // try {
-    //   const { email, password } = values;
-    //   if (email && password) {
-    //     const formData = { email, password };
-    //     const response = await loginUser(formData);
-    //      console.log(response.data.status)
-    //     if (response.data.status == 'Success') {
-    //       await storeToken(response.data.Token)
-    //       navigation.navigate('SideDrawer')
-    //     }
-    //     if (response.data.status === "Failed") {
-    //       console.log(response.data.Message)
-    //       Toast.show({
-    //         type: 'warning',
-    //         position: 'top',
-    //         topOffset: 10,
-    //         // keyboardOffset	: 10,
-    //         text1: response.data.Message
-    //       })
-    //     }
-    //   }
-    //   else {
-    //     Toast.show({
-    //       type: 'warning',
-    //       position: 'top',
-    //       topOffset: 0,
-    //       text1: "All fields are Required"
-    //     })
-    //   }
-    // } catch (error) {
-    //   Toast.show({
-    //     type: 'warning',
-    //     position: 'top',
-    //     topOffset: 0,
-    //     text1: "Something went wrong"
-    //   })
-    // }
+    const { email, password } = values;
+    if (email && password) {
+      const formData = { email, password };
+      const response = await loginUser(formData);
+      console.log(response)
+      try {
+        if (response.data) {
+          if(response.data.status === 'Success'){
+            await storeToken(response.data.Token)
+            await storeUser(response.data.user)
+            dispatch(setUserInformation({name : response.data.user.fullName , email : response.data.user.email}))
+            navigation.navigate('SideDrawer')
+          } 
+        }
+        else {
+          Toast.show({
+            type: 'warning',
+            position: 'top',
+            topOffset: 0,
+            // keyboardOffset	: 10,
+            text1: response.error.data.Message
+          })
+        }
+      }
+      catch (error) {
+        Toast.show({
+          type: 'warning',
+          position: 'top',
+          topOffset: 0,
+          text1: 'Something went wrong'
+        })
+      }
+    }
+    else {
+      console.log("Nots")
+      Toast.show({
+        type: 'warning',
+        position: 'top',
+        topOffset: 0,
+        text1: "All fields are Required"
+      })
+    }
   };
   let validateEmail = (email) => {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -109,6 +115,7 @@ export default function Login() {
   };
   return (
     <View style={styles.container}>
+      <Toast config={toastConfig} />
       <View>
         <Header name={'Sign Up'} />
         <View>
@@ -300,9 +307,9 @@ export default function Login() {
                     onPress={() => {
                       if (!validateEmail(forgetPasswordEmail)) {
                         setValidEmail(true)
-                        setTimeout(()=>{
+                        setTimeout(() => {
                           setValidEmail(false)
-                        },3000)
+                        }, 3000)
 
                       }
                       else {

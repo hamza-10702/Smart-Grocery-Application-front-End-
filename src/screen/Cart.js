@@ -23,7 +23,7 @@ export default function Cart({ navigation }) {
 
 
   const [loader, showLoader, hideLoader] = useIsLoading()
-  const [cartredItems, setCartedItem] = useState(null)
+  const [cartredItems, setCartedItem] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
 
   const backAction = async () => {
@@ -33,11 +33,14 @@ export default function Cart({ navigation }) {
 
 
   const setAllProducts = async () => {
-    showLoader()
     let cartItems = await getAllOrder()
-    setCartedItem(cartItems)
-    calculateTotal(cartItems)
-    hideLoader()
+    if (cartItems !== null) {
+      showLoader()
+      setCartedItem(cartItems)
+      calculateTotal(cartItems)
+      hideLoader()
+    }
+
   }
 
   const updateProductQuantity = (newQty, id) => {

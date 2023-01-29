@@ -25,7 +25,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import AppStatusBar from '../components/AppStatusBar';
 import Swiper from 'react-native-swiper';
 const { width } = Dimensions.get('screen');
-import { useScanListMutation } from '../services/userAuthentication';
 import { useAllProductQuery } from '../services/userAuthentication';
 const cardWidth = width / 3 - 20;
 const searchInputWidth = width / 1.4;
